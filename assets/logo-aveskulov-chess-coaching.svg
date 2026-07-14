@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 96" role="img" aria-label="Aveskulov Chess Coaching logo">
+  <rect x="3" y="3" width="384" height="90" fill="#234b3d"/>
+  <rect x="18" y="18" width="60" height="60" fill="#fffaf0" stroke="rgba(255,250,240,0.72)" stroke-width="2"/>
+  <path fill="#fffaf0" opacity="0.94" d="M18 18h15v15H18zM48 18h15v15H48zM33 33h15v15H33zM63 33h15v15H63zM18 48h15v15H18zM48 48h15v15H48zM33 63h15v15H33zM63 63h15v15H63z"/>
+  <path fill="#9a6b42" opacity="0.8" d="M33 18h15v15H33zM63 18h15v15H63zM18 33h15v15H18zM48 33h15v15H48zM33 48h15v15H33zM63 48h15v15H63zM18 63h15v15H18zM48 63h15v15H48z"/>
+  <text x="96" y="43" fill="#fffaf0" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="700">Aveskulov Chess</text>
+  <text x="96" y="67" fill="#fffaf0" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700">Coaching</text>
+</svg>
