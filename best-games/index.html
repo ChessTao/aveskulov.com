@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grandmaster Valeriy Aveskulov - PGN Viewer</title>
+  <script src="vendor/chess/chess-0.10.3.min.js"></script>
+  <link rel="stylesheet" href="Styles.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div>
+        <h1>My Best Games</h1>
+      </div>
+      <div class="theme-switcher">
+        <button id="themeToggleBtn" class="theme-toggle-btn" type="button" aria-haspopup="true" aria-expanded="false">Theme</button>
+        <div id="themeMenu" class="theme-menu" hidden>
+          <button type="button" class="theme-option" data-theme="classic">Dark</button>
+          <button type="button" class="theme-option" data-theme="blue">Blue</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <section class="panel">
+        <div id="gamesList" class="games-list"></div>
+      </section>
+
+      <section class="panel board-col">
+        <div class="board-head">
+          <div id="boardTitle" class="board-title">Loading...</div>
+          <div id="boardSubtitle" class="board-subtitle"></div>
+        </div>
+
+        <div class="board-shell">
+          <div id="board" class="board"></div>
+          <span id="whiteTurnDot" class="turn-dot white"></span>
+          <span id="blackTurnDot" class="turn-dot black"></span>
+          <button id="boardResizeHandle" class="board-resize-handle" type="button" title="Resize board" aria-label="Resize board"></button>
+        </div>
+
+        <div class="board-footer-actions">
+          <button id="downloadGameBtn" type="button">Download game</button>
+          <button id="downloadAllGamesBtn" type="button">Download all games</button>
+          <button id="prevGameBtn" type="button" title="Previous game" aria-label="Previous game">◀</button>
+          <button id="flipBtn">Flip board</button>
+          <button id="copyFenBtn">Copy FEN</button>
+          <button id="nextGameBtn" type="button" title="Next game" aria-label="Next game">▶</button>
+        </div>
+      </section>
+
+      <section class="panel moves-col">
+        <div id="movesWrap" class="moves-wrap"></div>
+        <div class="moves-controls">
+          <div class="moves-nav-group">
+            <button id="startBtn" title="Go to start" aria-label="Go to start">⏮</button>
+            <button id="prevBtn" title="Previous move" aria-label="Previous move">◀</button>
+            <button id="nextBtn" title="Next move" aria-label="Next move">▶</button>
+            <button id="endBtn" title="Go to end" aria-label="Go to end">⏭</button>
+          </div>
+          <button id="resetAnalysisBtn" class="analysis-return-btn" title="Return to game" aria-label="Return to game">↺</button>
+        </div>
+        <div class="analysis-box">
+          <div class="analysis-head">
+            <div id="engineState" class="analysis-line">Stockfish 17.1 Lite</div>
+            <div class="analysis-controls">
+              <div class="analysis-mode-grid" aria-label="Analysis controls">
+                <button id="analysisPlayBtn" class="analysis-icon-btn" type="button" title="Start analysis" aria-label="Start analysis">▶</button>
+                <button id="analysisPauseBtn" class="analysis-icon-btn" type="button" title="Pause analysis" aria-label="Stop analysis">⏸</button>
+                <button id="analysisDepthBtn" class="analysis-mode-btn" type="button" title="Maximum depth 20" aria-label="Maximum depth 20">20</button>
+                <button id="analysisInfiniteBtn" class="analysis-mode-btn" type="button" title="Infinite analysis" aria-label="Infinite analysis">∞</button>
+              </div>
+              <div class="analysis-lines-control">
+                <label for="analysisLinesRange" class="analysis-lines-label">Analysis lines</label>
+                <div class="analysis-lines-row">
+                  <input id="analysisLinesRange" class="analysis-lines-range" type="range" min="1" max="5" step="1" value="1" aria-label="Analysis lines" />
+                  <span id="analysisLinesValue" class="analysis-lines-value">1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="evalLine" class="analysis-line">Depth: -</div>
+          <div id="pvLine" class="pv-line">-</div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="StockfishEngine.js"></script>
+  <script src="pgn-data.js"></script>
+  <script src="app-pgn.js"></script>
+  <script src="app-position.js"></script>
+  <script src="app-render.js"></script>
+  <script src="App.js"></script>
+</body>
+</html>

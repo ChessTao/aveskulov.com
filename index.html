@@ -21,6 +21,7 @@
 
         <nav class="tabs" aria-label="Main navigation" role="tablist">
           <button class="tab is-active" type="button" data-tab="home" aria-selected="true">Home</button>
+          <button class="tab" type="button" data-tab="about" aria-selected="false">About</button>
           <button class="tab" type="button" data-tab="method" aria-selected="false">Method</button>
           <button class="tab" type="button" data-tab="students" aria-selected="false">Students</button>
           <button class="tab" type="button" data-tab="games" aria-selected="false">Games</button>
@@ -36,10 +37,15 @@
           <div class="hero-grid">
             <div class="hero-copy">
               <p class="lead welcome-text">
-                Welcome. This site brings together my chess coaching work: training methods,
-                publications, annotated games, student achievements, prices, and online camps.
+                Welcome to the website of Grandmaster Valeriy Aveskulov — chess coach,
+                author, and sports psychologist.
               </p>
-              <img class="signature" src="assets/signature-aveskulov.svg" alt="Aveskulov signature">
+              <p class="lead welcome-text">
+                Here you can learn more about me and my coaching approach, explore the achievements
+                of my students, find information about individual lessons and training camps, study
+                my best games, and discover my courses, publications, and other chess projects.
+              </p>
+              <img class="signature" src="assets/signature-aveskulov.svg" alt="Valeriy Aveskulov signature">
               <div class="hero-actions" aria-label="Primary actions">
                 <a class="button button-primary" href="#contact" data-tab-link="contact">Book a consultation</a>
                 <a class="button button-secondary" href="#method" data-tab-link="method">See the method</a>
@@ -55,19 +61,51 @@
           <div class="home-strip" aria-label="Coaching focus">
             <article>
               <span>01</span>
-              <h2>Personal diagnosis</h2>
-              <p>We start from your games, recurring decisions, and practical tournament habits.</p>
+              <h2>Individual approach</h2>
+              <p>Training based on your games, goals, strengths, and recurring mistakes.</p>
             </article>
             <article>
               <span>02</span>
-              <h2>Structured work</h2>
-              <p>Training blocks are built around calculation, plans, openings, endgames, and review.</p>
+              <h2>Structured training</h2>
+              <p>A clear programme covering calculation, strategy, openings, endgames, and tournament preparation.</p>
             </article>
             <article>
               <span>03</span>
-              <h2>Measurable progress</h2>
-              <p>Each cycle has visible goals, useful homework, and a clear feedback loop.</p>
+              <h2>Visible progress</h2>
+              <p>We track progress through your games, homework, recurring mistakes, and tournament performance.</p>
             </article>
+          </div>
+        </section>
+
+        <section class="panel" id="about" data-panel="about" tabindex="-1">
+          <div class="section-heading">
+            <p class="eyebrow">Biography</p>
+            <h1>Grandmaster, coach, author, and sports psychologist.</h1>
+            <p>
+              Valeriy Aveskulov brings together practical tournament experience, structured chess
+              training, published work, and a psychological view of decision-making under pressure.
+            </p>
+          </div>
+          <div class="about-layout">
+            <article class="text-block">
+              <h2>About Valeriy</h2>
+              <p>
+                As a chess coach, I work with players who want clearer thinking, stronger practical
+                habits, and a training process connected to their real games. My approach combines
+                analysis, calculation, strategic understanding, opening work, endgame technique,
+                and tournament psychology.
+              </p>
+              <p>
+                This page can later include a fuller biography: key tournament achievements,
+                coaching experience, publications, courses, languages, and student results.
+              </p>
+            </article>
+            <div class="quiet-list">
+              <div><strong>Title</strong><span>Grandmaster.</span></div>
+              <div><strong>Work</strong><span>Chess coaching, writing, courses, and training materials.</span></div>
+              <div><strong>Focus</strong><span>Decision-making, practical play, preparation, and psychology.</span></div>
+              <div><strong>Format</strong><span>Individual lessons, training plans, online work, and camps.</span></div>
+            </div>
           </div>
         </section>
 
@@ -127,63 +165,102 @@
         </section>
 
         <section class="panel" id="games" data-panel="games" tabindex="-1">
-          <div class="section-heading">
-            <p class="eyebrow">Annotated games</p>
-            <h1>Best games as lessons in decision-making.</h1>
-            <p>
-              A future library for selected games with themes, critical moments, and commentary.
-              It can later become an interactive board or a clean PGN catalogue.
-            </p>
-          </div>
-          <div class="game-table" role="table" aria-label="Selected games">
-            <div class="table-row table-head" role="row">
-              <span role="columnheader">Game</span>
-              <span role="columnheader">Theme</span>
-              <span role="columnheader">Format</span>
-            </div>
-            <div class="table-row" role="row">
-              <span role="cell">Aveskulov - Opponent, 2024</span>
-              <span role="cell">Long-term initiative</span>
-              <span role="cell">Annotated PGN</span>
-            </div>
-            <div class="table-row" role="row">
-              <span role="cell">Opponent - Aveskulov, 2023</span>
-              <span role="cell">Defensive resources</span>
-              <span role="cell">Critical positions</span>
-            </div>
-            <div class="table-row" role="row">
-              <span role="cell">Aveskulov - Opponent, 2022</span>
-              <span role="cell">Endgame conversion</span>
-              <span role="cell">Training notes</span>
-            </div>
+          <div class="games-feature">
+            <article class="games-feature-card">
+              <div>
+                <h2>My Best Games</h2>
+                <p>
+                  Here you can find my favorite games, analyze them with an engine, or download
+                  them with my brief comments. I hope this collection will not only tell you more
+                  about my chess style, but also bring you aesthetic pleasure.
+                </p>
+              </div>
+              <a class="button button-primary" href="best-games/index.html">Open My Best Games</a>
+            </article>
           </div>
         </section>
 
         <section class="panel" id="publications" data-panel="publications" tabindex="-1">
-          <div class="section-heading">
-            <p class="eyebrow">Published work</p>
-            <h1>Articles, books, courses, videos, and chess materials.</h1>
-            <p>
-              Links can be grouped by format, language, and topic. For now this section uses
-              placeholders that make room for a compact professional bibliography.
-            </p>
+          <div class="games-feature publications-feature">
+            <article class="games-feature-card publications-feature-card">
+              <div>
+                <h2>My publications</h2>
+                <p>Here you can find links to my main works.</p>
+              </div>
+            </article>
           </div>
-          <div class="link-columns">
-            <article>
-              <h2>Articles</h2>
-              <a href="#" aria-label="Article placeholder">Training article title</a>
-              <a href="#" aria-label="Article placeholder">Practical chess thinking</a>
+          <div class="publications-grid">
+            <a class="publication-card publication-card-book" href="https://www.amazon.com.br/dp/B00EX62ZQ4" target="_blank" rel="noopener">
+              <img
+                class="publication-cover"
+                src="https://covers.openlibrary.org/b/isbn/9781906454395-L.jpg"
+                alt="Cover of Attack with Black by Valery Aveskulov"
+              >
+              <span>
+                <strong>Attack with Black</strong>
+                <small>Book &middot; Gambit Publications &middot; 2012</small>
+                <span>
+                  An aggressive repertoire for Black against 1.d4, built around the Benko
+                  Gambit and related dynamic systems where Black fights for the initiative.
+                </span>
+              </span>
+            </a>
+            <a class="publication-card publication-card-logo" href="https://www.chessable.com/author/Valeriy_Aveskulov/" target="_blank" rel="noopener">
+              <img
+                class="publication-logo-img"
+                src="https://shop.chessable.com/cdn/shop/files/Chessable_shop_logo_1_140x.png?v=1659441688"
+                alt="Chessable"
+              >
+              <span>
+                <strong>Chessable courses</strong>
+                <small>Interactive training &middot; MoveTrainer</small>
+                <span>
+                  Interactive courses by GM Valeriy Aveskulov on Chessable, built for
+                  structured study and repeated practice.
+                </span>
+              </span>
+            </a>
+            <article class="publication-card publication-card-modern">
+              <span>
+                <strong>Modern Chess</strong>
+                <small>
+                  <a href="https://www.modern-chess.com/author/valeriy-aveskulov/" target="_blank" rel="noopener">
+                    3 courses
+                  </a>
+                  &middot; 4 magazine articles
+                </small>
+                <span>
+                  Courses: The Art of Exchanges, Learn from Stein, and Opposite-Coloured
+                  Bishops in the Middlegame.
+                </span>
+                <span>
+                  Articles:
+                  <a href="https://www.modern-chess.com/magazine/21/" target="_blank" rel="noopener">
+                    The Danger of Making Natural Moves
+                  </a>,
+                  <a href="https://www.modern-chess.com/magazine/22/" target="_blank" rel="noopener">
+                    The King Is a Strong Piece
+                  </a>,
+                  <a href="https://www.modern-chess.com/magazine/23/" target="_blank" rel="noopener">
+                    Master the Pawn Play
+                  </a>,
+                  and
+                  <a href="https://www.modern-chess.com/magazine/24/" target="_blank" rel="noopener">
+                    Saving Lost Positions
+                  </a>.
+                </span>
+              </span>
             </article>
-            <article>
-              <h2>Books and courses</h2>
-              <a href="#" aria-label="Course placeholder">Course title</a>
-              <a href="#" aria-label="Book placeholder">Book or chapter title</a>
-            </article>
-            <article>
-              <h2>Videos and databases</h2>
-              <a href="#" aria-label="Video placeholder">Lecture title</a>
-              <a href="#" aria-label="Database placeholder">Training database</a>
-            </article>
+            <a class="publication-card publication-card-text" href="https://www.chess.com/blog/LuckyTiger" target="_blank" rel="noopener">
+              <span>
+                <strong>LuckyTiger's Blog</strong>
+                <small>Chess.com blog &middot; GM Valeriy Aveskulov</small>
+                <span>
+                  A collection of blog posts with game analysis, instructive moments, endgame
+                  examples, opening ideas, and practical reflections.
+                </span>
+              </span>
+            </a>
           </div>
         </section>
 
@@ -246,13 +323,26 @@
 
         <section class="panel" id="contact" data-panel="contact" tabindex="-1">
           <div class="contact-layout">
-            <div class="section-heading">
-              <p class="eyebrow">Contact</p>
-              <h1>Tell me about your chess goals.</h1>
-              <p>
-                Add Telegram, email, calendar link, or a short form here. The first conversation
-                can clarify level, tournament plans, and the best training format.
-              </p>
+            <div class="contact-copy">
+              <div class="section-heading">
+                <p class="eyebrow">Contact</p>
+                <h1>Tell me about your chess goals.</h1>
+                <p>
+                  Add Telegram, email, calendar link, or a short form here. The first conversation
+                  can clarify level, tournament plans, and the best training format.
+                </p>
+              </div>
+              <div class="profile-links" aria-label="My online chess accounts">
+                <h2>My online chess accounts</h2>
+                <a href="https://www.chess.com/member/LuckyTiger" target="_blank" rel="noopener">
+                  <strong>Chess.com</strong>
+                  <span>LuckyTiger</span>
+                </a>
+                <a href="https://lichess.org/@/attackwithblack" target="_blank" rel="noopener">
+                  <strong>Lichess</strong>
+                  <span>AttackWithBlack</span>
+                </a>
+              </div>
             </div>
             <form class="contact-form">
               <label>
@@ -277,6 +367,52 @@
           </div>
         </section>
       </main>
+
+      <footer class="site-footer" aria-label="Legal notice">
+        <h2>Legal notice</h2>
+        <div class="legal-grid">
+          <section>
+            <h3>Copyright</h3>
+            <p>
+              Copyright &copy; 2026 Valeriy Aveskulov. All original text, design,
+              chess training materials, annotations, and site content are protected unless
+              stated otherwise.
+            </p>
+          </section>
+          <section>
+            <h3>Logo and brand assets</h3>
+            <p>
+              The Aveskulov Chess Coaching logo, signature mark, name treatment, and related
+              visual identity are original brand assets of Valeriy Aveskulov. They may not be
+              copied, modified, redistributed, or used without prior written permission.
+            </p>
+          </section>
+          <section>
+            <h3>Use of materials</h3>
+            <p>
+              You may link to this website and quote short excerpts with clear attribution.
+              Republishing lessons, annotations, PGN collections, images, or training materials
+              requires written permission.
+            </p>
+          </section>
+          <section>
+            <h3>External links and trademarks</h3>
+            <p>
+              Third-party names, platforms, logos, and trademarks belong to their respective
+              owners. External links are provided for reference and do not imply endorsement,
+              partnership, or sponsorship.
+            </p>
+          </section>
+          <section>
+            <h3>Educational purpose</h3>
+            <p>
+              The information on this website is provided for chess education and training.
+              Coaching can support progress, but no rating, title, tournament result, or
+              performance outcome is guaranteed.
+            </p>
+          </section>
+        </div>
+      </footer>
     </div>
 
     <script src="script.js"></script>
