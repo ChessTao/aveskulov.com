@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { extname, join } from "node:path";
 
 const outDir = "dist";
@@ -42,3 +42,18 @@ for (const directory of directories) {
     copyPath(directory, join(outDir, directory));
   }
 }
+
+if (existsSync(".openai")) {
+  copyPath(".openai", join(outDir, ".openai"));
+}
+
+mkdirSync(join(outDir, "server"), { recursive: true });
+writeFileSync(
+  join(outDir, "server", "index.js"),
+  `export default {
+  fetch(request, env) {
+    return env.ASSETS.fetch(request);
+  },
+};
+`,
+);
