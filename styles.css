@@ -6,7 +6,6 @@
   --paper-strong: #fffaf0;
   --line: #d8cfbf;
   --green: #234b3d;
-  --green-soft: #dfe7db;
   --wood: #a7653c;
   --board-light-rgb: 239 209 166;
   --board-dark-rgb: 166 93 56;
@@ -183,6 +182,10 @@ textarea {
   padding-top: clamp(10px, 3vw, 34px);
 }
 
+.hero-copy h1 {
+  font-size: clamp(1.85rem, 3.7vw, 3.25rem);
+}
+
 .eyebrow {
   margin: 0 0 14px;
   color: var(--wood);
@@ -340,9 +343,27 @@ p {
 }
 
 .text-block {
-  padding: 28px;
-  border-left: 5px solid var(--green);
-  background: var(--green-soft);
+  max-width: 880px;
+}
+
+.method-article {
+  max-width: 880px;
+  margin-top: 42px;
+  padding: 0;
+}
+
+.method-article h2 {
+  margin-top: 30px;
+  color: var(--green);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+}
+
+.method-article h2:first-of-type {
+  margin-top: 0;
+}
+
+.method-article p:last-child {
+  margin-bottom: 0;
 }
 
 .quiet-list {
