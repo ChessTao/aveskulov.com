@@ -31,9 +31,6 @@ const boardTitleEl = document.getElementById('boardTitle');
 const boardSubtitleEl = document.getElementById('boardSubtitle');
 const whiteTurnDotEl = document.getElementById('whiteTurnDot');
 const blackTurnDotEl = document.getElementById('blackTurnDot');
-const themeToggleBtnEl = document.getElementById('themeToggleBtn');
-const themeMenuEl = document.getElementById('themeMenu');
-const themeOptionEls = Array.from(document.querySelectorAll('.theme-option'));
 const resetAnalysisBtnEl = document.getElementById('resetAnalysisBtn');
 const prevGameBtnEl = document.getElementById('prevGameBtn');
 const nextGameBtnEl = document.getElementById('nextGameBtn');
@@ -48,7 +45,6 @@ const analysisLinesRangeEl = document.getElementById('analysisLinesRange');
 const analysisLinesValueEl = document.getElementById('analysisLinesValue');
 const evalLineEl = document.getElementById('evalLine');
 const pvLineEl = document.getElementById('pvLine');
-const THEMES = ['classic', 'blue'];
 const ANALYSIS_MODES = ['depth20', 'infinite'];
 const ANALYSIS_LINE_COUNTS = [1, 2, 3, 4, 5];
 const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -75,7 +71,6 @@ const state = {
   gameIndex: 0,
   replayIndex: 0,
   boardSize: Number(localStorage.getItem('cm_board_size')) || null,
-  theme: THEMES.includes(localStorage.getItem('cm_theme')) ? localStorage.getItem('cm_theme') : 'classic',
   sortKey: 'date',
   sortDir: 'desc',
   orientation: localStorage.getItem('cm_orientation') || 'white',
@@ -282,45 +277,6 @@ function clampBoardSize(size) {
 function persistBoardSize() {
   if (state.boardSize) localStorage.setItem('cm_board_size', String(state.boardSize));
   else localStorage.removeItem('cm_board_size');
-}
-
-function persistTheme() {
-  localStorage.setItem('cm_theme', state.theme);
-}
-
-function updateThemeMenu() {
-  if (!themeToggleBtnEl || !themeMenuEl) return;
-  themeToggleBtnEl.textContent = 'Theme';
-  themeOptionEls.forEach((optionEl) => {
-    const isActive = optionEl.dataset.theme === state.theme;
-    optionEl.classList.toggle('active', isActive);
-    optionEl.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-  });
-}
-
-function applyTheme() {
-  document.body.dataset.theme = state.theme;
-  updateThemeMenu();
-}
-
-function setTheme(theme) {
-  if (!THEMES.includes(theme) || theme === state.theme) return;
-  state.theme = theme;
-  persistTheme();
-  applyTheme();
-}
-
-function closeThemeMenu() {
-  if (!themeMenuEl || !themeToggleBtnEl) return;
-  themeMenuEl.hidden = true;
-  themeToggleBtnEl.setAttribute('aria-expanded', 'false');
-}
-
-function toggleThemeMenu() {
-  if (!themeMenuEl || !themeToggleBtnEl) return;
-  const shouldOpen = themeMenuEl.hidden;
-  themeMenuEl.hidden = !shouldOpen;
-  themeToggleBtnEl.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
 }
 
 function applyBoardSize() {
@@ -563,18 +519,6 @@ boardEl.addEventListener('click', (event) => {
   onSquareClick(event);
 });
 
-themeToggleBtnEl.addEventListener('click', (event) => {
-  event.stopPropagation();
-  toggleThemeMenu();
-});
-
-themeOptionEls.forEach((optionEl) => {
-  optionEl.addEventListener('click', () => {
-    setTheme(optionEl.dataset.theme);
-    closeThemeMenu();
-  });
-});
-
 movesWrapEl.addEventListener('click', (event) => {
   setKeyboardScope('viewer');
   const replayBtn = event.target.closest('.move-btn[data-replay-index]');
@@ -658,11 +602,6 @@ analysisPauseBtnEl.addEventListener('click', () => {
 });
 
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && themeMenuEl && !themeMenuEl.hidden) {
-    closeThemeMenu();
-    return;
-  }
-
   if (keyboardScope === 'games') {
     if (event.key === 'ArrowUp') {
       event.preventDefault();
@@ -702,16 +641,9 @@ window.addEventListener('resize', () => {
   applyBoardSize();
 });
 
-document.addEventListener('click', (event) => {
-  if (!themeMenuEl || themeMenuEl.hidden) return;
-  if (event.target.closest('.theme-switcher')) return;
-  closeThemeMenu();
-});
-
 async function boot() {
   downloadGameBtnEl.disabled = true;
   downloadAllGamesBtnEl.disabled = true;
-  applyTheme();
   applyBoardSize();
   renderer.renderBoard();
 

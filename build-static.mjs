@@ -4,7 +4,7 @@ import { extname, join } from "node:path";
 const outDir = "dist";
 const rootFiles = ["index.html", "styles.css", "script.js"];
 const rootAssetExtensions = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg"]);
-const directories = ["assets", "best-games"];
+const directories = ["assets", "best-games", "pictures for students page"];
 
 function copyPath(source, target) {
   const stats = statSync(source);
@@ -51,7 +51,55 @@ mkdirSync(join(outDir, "server"), { recursive: true });
 writeFileSync(
   join(outDir, "server", "index.js"),
   `export default {
-  fetch(request, env) {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/camp-notifications" && request.method === "POST") {
+      let payload;
+
+      try {
+        payload = await request.json();
+      } catch {
+        return Response.json({ message: "Invalid request." }, { status: 400 });
+      }
+
+      const email = String(payload.email || "").trim();
+      const consent = payload.consent === true;
+      const website = String(payload.website || "").trim();
+      const isEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+
+      if (website) {
+        return Response.json({ message: "Accepted." }, { status: 202 });
+      }
+
+      if (!isEmail || !consent) {
+        return Response.json({ message: "Email and consent are required." }, { status: 400 });
+      }
+
+      const signup = {
+        email,
+        source: payload.source || "camps-page",
+        consent: "endgame-camp-announcements",
+        submittedAt: new Date().toISOString(),
+      };
+
+      if (!env.CAMP_SIGNUP_WEBHOOK_URL) {
+        return Response.json({ message: "Signup service is not configured." }, { status: 503 });
+      }
+
+      const webhookResponse = await fetch(env.CAMP_SIGNUP_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signup),
+      });
+
+      if (!webhookResponse.ok) {
+        return Response.json({ message: "Signup service unavailable." }, { status: 502 });
+      }
+
+      return Response.json({ message: "Accepted." }, { status: 202 });
+    }
+
     return env.ASSETS.fetch(request);
   },
 };

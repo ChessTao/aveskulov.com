@@ -183,7 +183,7 @@ textarea {
 }
 
 .hero-copy h1 {
-  font-size: clamp(1.85rem, 3.7vw, 3.25rem);
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
 }
 
 .eyebrow {
@@ -205,14 +205,14 @@ p {
 h1 {
   max-width: 780px;
   margin-bottom: 20px;
-  font-size: clamp(2rem, 4.2vw, 3.85rem);
+  font-size: clamp(1.6rem, 3.35vw, 3.1rem);
   line-height: 1.04;
   letter-spacing: 0;
 }
 
 h2 {
   margin-bottom: 10px;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   line-height: 1.25;
 }
 
@@ -224,14 +224,11 @@ p {
 
 .lead {
   max-width: 620px;
-  font-size: 1.14rem;
 }
 
 .welcome-text {
   max-width: 680px;
   color: var(--ink);
-  font-size: clamp(1.12rem, 1.65vw, 1.45rem);
-  line-height: 1.55;
 }
 
 .signature {
@@ -293,10 +290,7 @@ p {
   line-height: 1.45;
 }
 
-.home-strip,
-.achievement-grid,
-.price-grid,
-.camp-program {
+.home-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
@@ -305,17 +299,57 @@ p {
   background: var(--line);
 }
 
-.home-strip article,
-.achievement-grid article,
-.price-grid article,
-.camp-program article {
+.home-strip article {
   min-width: 0;
   padding: 24px;
   background: rgba(255, 250, 240, 0.92);
 }
 
-.home-strip span,
-.camp-program span {
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1px;
+  margin-top: 42px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.achievement-grid article {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  min-width: 0;
+  padding: 22px;
+  background: rgba(255, 250, 240, 0.92);
+}
+
+.student-card-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  object-fit: cover;
+  object-position: 50% 24%;
+}
+
+.achievement-grid h2 {
+  margin-bottom: 12px;
+  color: var(--green);
+  font-size: 1.05rem;
+}
+
+.achievement-grid p {
+  margin-bottom: 0;
+}
+
+.achievement-grid article a {
+  color: var(--green);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.home-strip span {
   display: block;
   margin-bottom: 28px;
   color: var(--brass);
@@ -329,7 +363,7 @@ p {
 }
 
 .section-heading h1 {
-  font-size: clamp(1.85rem, 3.7vw, 3.25rem);
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
 }
 
 .about-layout,
@@ -355,7 +389,7 @@ p {
 .method-article h2 {
   margin-top: 30px;
   color: var(--green);
-  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
 }
 
 .method-article h2:first-of-type {
@@ -364,6 +398,14 @@ p {
 
 .method-article p:last-child {
   margin-bottom: 0;
+}
+
+.legal-text section {
+  scroll-margin-top: 150px;
+}
+
+.legal-text section + section {
+  margin-top: 30px;
 }
 
 .quiet-list {
@@ -392,23 +434,24 @@ p {
   line-height: 1.55;
 }
 
-.metric,
-.price {
+.metric {
   display: block;
   margin-bottom: 18px;
   color: var(--green);
-  font-size: 2rem;
+  font-size: clamp(1.32rem, 2.4vw, 2rem);
   font-weight: 700;
+  line-height: 1.04;
 }
 
-.featured-price {
-  background: var(--green) !important;
-  color: var(--paper-strong);
+.price-text {
+  margin-top: 34px;
 }
 
-.featured-price p,
-.featured-price .price {
-  color: rgba(255, 250, 240, 0.82);
+.price-text a {
+  color: var(--green);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
 .games-feature {
@@ -443,7 +486,7 @@ p {
   max-width: 640px;
   margin-bottom: 16px;
   color: var(--green);
-  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
   line-height: 1.02;
 }
 
@@ -577,13 +620,60 @@ p {
   text-underline-offset: 3px;
 }
 
-.camp-program {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.camp-signup-form {
+  display: grid;
+  gap: 16px;
+  max-width: 640px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
 }
 
-.contact-copy {
+.camp-signup-form p {
+  margin: 0;
+}
+
+.camp-signup-form label {
   display: grid;
-  gap: 28px;
+  gap: 7px;
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.camp-signup-form input[type="email"] {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fffdf7;
+  color: var(--ink);
+  padding: 12px;
+}
+
+.camp-signup-form input[type="email"]:focus {
+  border-color: var(--green);
+  outline: 2px solid rgba(35, 75, 61, 0.18);
+}
+
+.checkbox-label {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  font-weight: 400 !important;
+  line-height: 1.45;
+}
+
+.checkbox-label input {
+  margin-top: 3px;
+}
+
+.hidden-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .profile-links {
@@ -596,7 +686,7 @@ p {
   padding: 18px 20px;
   border-bottom: 1px solid var(--line);
   color: var(--green);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
 }
 
 .profile-links a {
@@ -661,51 +751,27 @@ p {
   outline: 2px solid rgba(35, 75, 61, 0.18);
 }
 
+.contact-form textarea::placeholder {
+  color: rgba(105, 104, 95, 0.58);
+}
+
+.contact-legal-link {
+  margin: 30px 0 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.84rem;
+}
+
+.contact-legal-link a {
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-underline-offset: 4px;
+}
+
 .form-note {
   margin: 0;
   font-size: 0.86rem;
-}
-
-.site-footer {
-  padding: 34px clamp(22px, 5vw, 56px) 40px;
-  border-top: 1px solid var(--line);
-  background: rgba(255, 250, 240, 0.78);
-}
-
-.site-footer h2 {
-  margin-bottom: 22px;
-  color: var(--green);
-  font-size: 1.25rem;
-}
-
-.legal-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1px;
-  border: 1px solid var(--line);
-  background: var(--line);
-}
-
-.legal-grid section {
-  min-width: 0;
-  padding: 18px;
-  background: rgba(255, 250, 240, 0.9);
-}
-
-.legal-grid h3 {
-  margin-bottom: 8px;
-  color: var(--green);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.legal-grid p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.55;
 }
 
 @media (max-width: 900px) {
@@ -724,8 +790,6 @@ p {
 
   .home-strip,
   .achievement-grid,
-  .price-grid,
-  .camp-program,
   .publications-grid {
     grid-template-columns: 1fr;
   }
@@ -794,6 +858,6 @@ p {
   }
 
   h1 {
-    font-size: clamp(1.95rem, 10vw, 2.85rem);
+    font-size: clamp(1.55rem, 8vw, 2.3rem);
   }
 }
