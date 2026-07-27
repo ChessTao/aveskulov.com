@@ -59,17 +59,65 @@ if (window.location.hash) {
 }
 
 if (contactForm) {
-  contactForm.addEventListener("submit", (event) => {
+  const status = contactForm.querySelector("[data-contact-status]");
+
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(contactForm);
-    const name = formData.get("name") || "A prospective student";
-    const email = formData.get("email") || "not specified";
-    const level = formData.get("level") || "not specified";
-    const message = formData.get("message") || "I would like to discuss chess training.";
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const level = String(formData.get("level") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+    const website = String(formData.get("website") || "").trim();
     const subject = encodeURIComponent("Chess coaching inquiry");
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nLevel: ${level}\n\n${message}`);
+    const body = encodeURIComponent(
+      `Name: ${name || "A prospective student"}\nEmail: ${email || "not specified"}\nLevel: ${level || "not specified"}\n\n${message || "I would like to discuss chess training."}`,
+    );
 
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    if (!email || !message || website) {
+      if (status) {
+        status.textContent = "Please enter your email and message.";
+      }
+      return;
+    }
+
+    const button = contactForm.querySelector("button");
+
+    if (button) {
+      button.disabled = true;
+    }
+
+    if (status) {
+      status.textContent = "Sending...";
+    }
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, level, message, website, source: "contact-page" }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Contact service unavailable");
+      }
+
+      contactForm.reset();
+
+      if (status) {
+        status.textContent = "Thank you. Your message has been sent.";
+      }
+    } catch {
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+
+      if (status) {
+        status.textContent = "Your email app has been opened so the message can be sent directly.";
+      }
+    } finally {
+      if (button) {
+        button.disabled = false;
+      }
+    }
   });
 }
 

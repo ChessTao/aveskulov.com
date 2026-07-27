@@ -1,89 +1,89 @@
-# Contact Form Email Plan
+# План по отправке сообщений с формы обратной связи
 
-## Goal
+## Цель
 
-Make the `Send message` button on the Contact page send form submissions reliably, instead of only opening the visitor's email app through `mailto:`.
+Сделать так, чтобы кнопка «Отправить сообщение» на странице «Контакты» надежно отправляла сообщения, а не только открывала почтовое приложение посетителя через `mailto:`.
 
-## Current State
+## Текущее состояние
 
-- The Contact page form is in `index.html`.
-- The button text is `Send message`.
-- The current frontend logic in `script.js` collects `name`, `email`, `level`, and `message`.
-- It then opens a prepared email through `mailto:`.
-- No message is currently sent by the site backend.
+- Форма контактов находится в `index.html`.
+- Текст кнопки: «Отправить сообщение».
+- Текущая логика на фронтенде в `script.js` собирает `name`, `email`, `level` и `message`.
+- Затем она открывает подготовленное письмо через `mailto:`.
+- В настоящее время сайт не отправляет сообщения через backend.
 
-## Recommended Approach
+## Рекомендуемый подход
 
-Use an email API provider, preferably Resend or Brevo.
+Использовать API сервиса электронной почты, предпочтительно Resend или Brevo.
 
-This gives the cleanest user experience:
+Это дает наиболее удобный пользовательский опыт:
 
-- the visitor fills in the form;
-- clicks `Send message`;
-- the site sends the message through `/api/contact`;
-- the visitor sees a success or error message on the page;
-- the message arrives directly in the site owner's email inbox.
+- посетитель заполняет форму;
+- нажимает «Отправить сообщение»;
+- сайт отправляет сообщение через `/api/contact`;
+- посетитель видит на странице сообщение об успехе или ошибке;
+- письмо приходит прямо в почтовый ящик владельца сайта.
 
-## Required External Setup
+## Необходимая внешняя настройка
 
-Choose an email provider and prepare:
+Выбрать провайдера электронной почты и подготовить:
 
-- API key;
-- verified sender email or verified domain;
-- recipient email address;
-- any required DNS records, such as SPF/DKIM, if the provider requires domain verification.
+- API-ключ;
+- подтвержденный адрес отправителя или подтвержденный домен;
+- адрес получателя;
+- необходимые DNS-записи, например SPF/DKIM, если провайдер требует подтверждения домена.
 
-Suggested runtime environment variables:
+Предлагаемые переменные окружения во время работы:
 
 - `CONTACT_EMAIL_API_KEY`
 - `CONTACT_EMAIL_TO`
 - `CONTACT_EMAIL_FROM`
 
-Exact variable names can be adjusted once the provider is chosen.
+Имена переменных можно изменить после выбора провайдера.
 
-## Implementation Steps
+## Шаги реализации
 
-1. Add a `/api/contact` handler to `build-static.mjs`, similar to the existing `/api/camp-notifications` endpoint.
-2. Validate the submitted form data on the server:
-   - required valid email;
-   - non-empty message;
-   - optional name and chess level;
-   - honeypot field for simple bot protection.
-3. Send the message through the selected email provider API.
-4. Update `script.js` so the Contact form submits to `/api/contact` with `fetch`.
-5. Show clear form states:
-   - sending;
-   - success;
-   - validation error;
-   - delivery error.
-6. Keep `mailto:` only as a fallback if the backend is unavailable.
-7. Add a short privacy-conscious note near the form if needed.
-8. Rebuild with `npm.cmd run build`.
-9. Test:
-   - valid submission;
-   - invalid email;
-   - empty required fields;
-   - provider/API failure;
-   - production environment variables.
+1. Добавить обработчик `/api/contact` в `build-static.mjs`, похожий на существующий endpoint `/api/camp-notifications`.
+2. Проверять отправленные данные формы на сервере:
+   - обязательный корректный email;
+   - непустое сообщение;
+   - необязательные имя и уровень шахматиста;
+   - поле-ловушку `honeypot` для простой защиты от ботов.
+3. Отправлять сообщение через API выбранного провайдера.
+4. Обновить `script.js`, чтобы форма контактов отправлялась на `/api/contact` через `fetch`.
+5. Показывать понятные состояния формы:
+   - отправка;
+   - успех;
+   - ошибка валидации;
+   - ошибка доставки.
+6. Оставить `mailto:` только как запасной вариант, если backend недоступен.
+7. При необходимости добавить краткую заметку о конфиденциальности рядом с формой.
+8. Собрать проект командой `npm.cmd run build`.
+9. Протестировать:
+   - успешную отправку;
+   - некорректный email;
+   - пустые обязательные поля;
+   - сбой провайдера/API;
+   - переменные окружения в продакшене.
 
-## Alternative Fast Setup
+## Альтернативный быстрый вариант
 
-Use a form/webhook service such as Formspree, Basin, Getform, Make, Zapier, or Google Apps Script.
+Использовать сервис формы или вебхука, такой как Formspree, Basin, Getform, Make, Zapier или Google Apps Script.
 
-This requires fewer backend details:
+Это требует меньше деталей на backend:
 
-- create a form endpoint/webhook;
-- store it in `CONTACT_FORM_WEBHOOK_URL`;
-- `/api/contact` forwards the form data there;
-- the external service sends or stores the message.
+- создать endpoint или вебхук формы;
+- сохранить его в `CONTACT_FORM_WEBHOOK_URL`;
+- `/api/contact` пересылает данные формы туда;
+- внешний сервис отправляет или сохраняет сообщение.
 
-This is faster, but less controlled than a direct email API.
+Это быстрее, но менее контролируемо, чем прямой API для email.
 
-## Recommended Next Decision
+## Рекомендуемое следующее решение
 
-Choose between:
+Выбрать между:
 
-- **Resend/Brevo** for professional direct email delivery;
-- **Formspree/Make/Zapier/Google Apps Script** for the fastest setup.
+- **Resend/Brevo** для профессиональной прямой доставки email;
+- **Formspree/Make/Zapier/Google Apps Script** для самого быстрого запуска.
 
-After that, the code changes are straightforward.
+После этого изменения в коде будут довольно простыми.

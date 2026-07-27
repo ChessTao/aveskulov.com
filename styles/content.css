@@ -1,0 +1,95 @@
+.section-heading {
+  max-width: 800px;
+}
+
+.section-heading h1 {
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+}
+
+.about-layout,
+.method-layout,
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(320px, 1fr);
+  gap: clamp(26px, 5vw, 56px);
+  align-items: start;
+  margin-top: 42px;
+}
+
+.text-block {
+  max-width: 880px;
+}
+
+.method-article {
+  max-width: 880px;
+  margin-top: 42px;
+  padding: 0;
+}
+
+.method-article h2 {
+  margin-top: 30px;
+  color: var(--green);
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+}
+
+.method-article h2:first-of-type {
+  margin-top: 0;
+}
+
+.method-article p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-text section {
+  scroll-margin-top: 150px;
+}
+
+.legal-text section + section {
+  margin-top: 30px;
+}
+
+.quiet-list {
+  border: 1px solid var(--line);
+  background: var(--paper-strong);
+}
+
+.quiet-list div {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.quiet-list div:last-child {
+  border-bottom: 0;
+}
+
+.quiet-list strong {
+  color: var(--green);
+}
+
+.quiet-list span {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.metric {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--green);
+  font-size: clamp(1.32rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.04;
+}
+
+.price-text {
+  margin-top: 34px;
+}
+
+.price-text a {
+  color: var(--green);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}

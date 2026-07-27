@@ -1,0 +1,72 @@
+:root {
+  color-scheme: light;
+  --ink: #22231f;
+  --muted: #69685f;
+  --paper: #f4f0e7;
+  --paper-strong: #fffaf0;
+  --line: #d8cfbf;
+  --green: #234b3d;
+  --wood: #a7653c;
+  --board-light-rgb: 239 209 166;
+  --board-dark-rgb: 166 93 56;
+  --brass: #b28a4a;
+  --shadow: 0 22px 70px rgba(34, 35, 31, 0.13);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--paper);
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--paper);
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(rgba(244, 240, 231, 0.26), rgba(244, 240, 231, 0.5)),
+    conic-gradient(
+      from 90deg,
+      rgb(var(--board-light-rgb) / 0.46) 25%,
+      rgb(var(--board-dark-rgb) / 0.56) 0 50%,
+      rgb(var(--board-light-rgb) / 0.46) 0 75%,
+      rgb(var(--board-dark-rgb) / 0.56) 0
+    );
+  background-size: auto, 160px 160px;
+  content: "";
+  pointer-events: none;
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(255, 250, 240, 0.6), transparent 34%),
+    radial-gradient(circle at 82% 88%, rgba(35, 75, 61, 0.13), transparent 38%),
+    linear-gradient(90deg, rgba(255, 250, 240, 0.32), rgba(255, 250, 240, 0.08), rgba(255, 250, 240, 0.32));
+  content: "";
+  pointer-events: none;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}

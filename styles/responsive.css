@@ -1,0 +1,87 @@
+@media (max-width: 900px) {
+  .topbar,
+  .about-layout,
+  .hero-grid,
+  .method-layout,
+  .games-feature,
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    justify-content: flex-start;
+  }
+
+  .home-strip,
+  .achievement-grid,
+  .publications-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quiet-list div {
+    grid-template-columns: 1fr;
+  }
+
+  .publication-card {
+    grid-template-columns: 82px 1fr;
+  }
+
+  .publication-cover {
+    width: 82px;
+  }
+
+  .publication-card-logo {
+    grid-template-columns: 124px 1fr;
+  }
+
+  .publication-logo-img {
+    width: 116px;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-shell {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .topbar {
+    padding: 14px;
+  }
+
+  .brand {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-mark {
+    width: 300px;
+    height: 84px;
+  }
+
+  .brand-mark img {
+    width: 290px;
+    height: 76px;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow-x: visible;
+  }
+
+  .tab {
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .panel {
+    padding: 22px 16px 30px;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 8vw, 2.3rem);
+  }
+}

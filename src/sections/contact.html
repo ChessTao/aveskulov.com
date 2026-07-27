@@ -1,0 +1,42 @@
+<section class="panel" id="contact" data-panel="contact" tabindex="-1">
+          <div class="section-heading">
+            <h1>Contact form</h1>
+          </div>
+          <div class="contact-layout">
+            <form class="contact-form">
+              <label>
+                Name
+                <input type="text" name="name" autocomplete="name" placeholder="Your name">
+              </label>
+              <label>
+                Email
+                <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+              </label>
+              <label>
+                Chess level
+                <input type="text" name="level" placeholder="Rating, title, or playing experience">
+              </label>
+              <label>
+                Message
+                <textarea name="message" rows="5" placeholder="Send a short message about your chess level, tournament plans, and what you would like to improve. The first conversation can clarify the best training format." required></textarea>
+              </label>
+              <label class="hidden-field" aria-hidden="true">
+                Website
+                <input type="text" name="website" tabindex="-1" autocomplete="off">
+              </label>
+              <button class="button button-primary" type="submit">Send message</button>
+              <p class="form-note" data-contact-status></p>
+            </form>
+            <div class="profile-links" aria-label="My online chess accounts">
+              <h2>My online chess accounts</h2>
+              <a href="https://www.chess.com/member/LuckyTiger" target="_blank" rel="noopener">
+                <strong>Chess.com</strong>
+                <span>LuckyTiger</span>
+              </a>
+              <a href="https://lichess.org/@/attackwithblack" target="_blank" rel="noopener">
+                <strong>Lichess</strong>
+                <span>AttackWithBlack</span>
+              </a>
+            </div>
+          </div>
+        </section>

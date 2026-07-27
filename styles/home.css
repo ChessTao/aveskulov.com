@@ -1,0 +1,133 @@
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 430px);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+}
+
+.hero-copy {
+  padding-top: clamp(10px, 3vw, 34px);
+}
+
+.hero-copy h1 {
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--wood);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 780px;
+  margin-bottom: 20px;
+  font-size: clamp(1.6rem, 3.35vw, 3.1rem);
+  line-height: 1.04;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.lead {
+  max-width: 620px;
+}
+
+.welcome-text {
+  max-width: 680px;
+  color: var(--ink);
+}
+
+.signature {
+  display: block;
+  width: min(330px, 78vw);
+  height: auto;
+  margin: 18px 0 0;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border: 1px solid var(--green);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: var(--green);
+  color: var(--paper-strong);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--green);
+}
+
+.portrait {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--paper-strong);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 36%;
+  filter: saturate(0.92) contrast(1.03);
+}
+
+.portrait figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.home-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 42px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.home-strip article {
+  min-width: 0;
+  padding: 24px;
+  background: rgba(255, 250, 240, 0.92);
+}

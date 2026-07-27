@@ -1,0 +1,165 @@
+.games-feature {
+  display: grid;
+  max-width: 820px;
+}
+
+.games-feature-card {
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 240, 0.76);
+}
+
+.games-feature-card {
+  display: grid;
+  min-height: 300px;
+  align-content: space-between;
+  gap: 28px;
+  padding: clamp(24px, 4vw, 38px);
+  background:
+    linear-gradient(90deg, rgba(255, 250, 240, 0.9), rgba(255, 250, 240, 0.68)),
+    conic-gradient(
+      from 90deg,
+      rgb(var(--board-light-rgb) / 0.38) 25%,
+      rgb(var(--board-dark-rgb) / 0.44) 0 50%,
+      rgb(var(--board-light-rgb) / 0.38) 0 75%,
+      rgb(var(--board-dark-rgb) / 0.44) 0
+    );
+  background-size: auto, 112px 112px;
+}
+
+.games-feature-card h2 {
+  max-width: 640px;
+  margin-bottom: 16px;
+  color: var(--green);
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 1.02;
+}
+
+.games-feature-card p {
+  max-width: 660px;
+}
+
+.games-feature-card .button {
+  width: fit-content;
+}
+
+#games .games-feature-card {
+  min-height: auto;
+  padding: clamp(18px, 3vw, 30px) 0 0;
+  border: 0;
+  background: transparent;
+}
+
+#games .games-feature-card p {
+  margin-bottom: 0;
+}
+
+#games .games-feature-card .button {
+  margin-top: 28px;
+}
+
+.publications-feature-card {
+  min-height: auto;
+  padding: clamp(18px, 3vw, 30px) 0 0;
+  border: 0;
+  background: transparent;
+}
+
+.publications-feature-card p {
+  margin-bottom: 0;
+}
+
+.publications-feature + .publications-grid {
+  margin-top: 34px;
+}
+
+.publications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 42px;
+}
+
+.publication-card {
+  display: grid !important;
+  grid-template-columns: 92px 1fr;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 250, 240, 0.72);
+  color: var(--ink) !important;
+  text-decoration: none;
+}
+
+.publication-card-book,
+.publication-card-logo,
+.publication-card-modern,
+.publication-card-text {
+  min-height: 260px;
+}
+
+.publication-card:hover,
+.publication-card:focus-visible {
+  border-color: var(--green);
+  outline: none;
+}
+
+.publication-cover {
+  display: block;
+  width: 92px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.publication-card-logo {
+  align-items: center;
+  grid-template-columns: 150px 1fr;
+}
+
+.publication-card-modern,
+.publication-card-text {
+  display: block !important;
+}
+
+.publication-logo-img {
+  display: block;
+  width: 142px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.publication-card strong,
+.publication-card small,
+.publication-card span span {
+  display: block;
+}
+
+.publication-card strong {
+  color: var(--green);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.publication-card small {
+  margin-top: 4px;
+  color: var(--wood);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.publication-card span span {
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.publication-card a {
+  color: var(--green);
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
