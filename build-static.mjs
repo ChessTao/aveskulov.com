@@ -65,3 +65,7 @@ for (const directory of directories) {
 if (existsSync(".openai")) {
   copyPath(".openai", join(outDir, ".openai"));
 }
+
+if (existsSync("server")) {
+  copyPath("server", join(outDir, "dist", "server"));
+}
