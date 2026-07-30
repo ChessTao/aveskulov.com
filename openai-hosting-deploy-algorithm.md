@@ -4,6 +4,8 @@
 
 ## 3. Создать новую production-версию в OpenAI Hosting
 
+<span style="color: #15803d;">🟢 Выполнено: создана версия 7 в OpenAI Hosting из коммита `3722162c664b7538c4f1abee316a58787cf60e0d`.</span>
+
 Перед созданием версии убедиться, что:
 
 - проект собран командой `npm.cmd run build`;
@@ -32,6 +34,8 @@ project_id: appgprj_6a5f7251b6ac8191a9ba89e00bd9b6bc
 Важно: версию нужно создавать только после коммита. OpenAI Hosting должен получить именно то состояние проекта, которое зафиксировано в git.
 
 ## 4. Задеплоить сохранённую версию
+
+<span style="color: #15803d;">🟢 Выполнено: версия 7 задеплоена в production.</span>
 
 После создания версии нужно развернуть её в production.
 
@@ -115,6 +119,8 @@ aveskulov.com
 Тогда OpenAI Hosting выдаст DNS-записи типа `A` или другие записи для корневого домена.
 
 ## 9. Проверить сайт после деплоя
+
+<span style="color: #15803d;">🟢 Выполнено для текущего production URL `https://aveskulov-chess-coaching.vdaveskulov.chatgpt.site`: главная страница, `best-games`, Stockfish JS/WASM, базовая API-валидация и запуск движка проверены.</span>
 
 Открыть:
 
