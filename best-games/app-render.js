@@ -394,7 +394,7 @@
     function updateHeader() {
       const game = getCurrentGame();
       boardTitleEl.textContent = game.title;
-      boardSubtitleEl.textContent = `${game.headers.Event || 'No event'} • ${game.headers.Site || 'No site'} • ${game.headers.Date || 'No date'} • ${game.headers.Result || '*'}`;
+      boardSubtitleEl.textContent = game.subtitle;
       resetAnalysisBtnEl.classList.toggle('visible', Boolean(state.analysisMode && state.analysisRoot));
     }
 

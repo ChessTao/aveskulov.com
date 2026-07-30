@@ -29,6 +29,34 @@
     return match ? match[1] : '-';
   }
 
+  function knownHeaderValue(value = '') {
+    const text = String(value || '').trim();
+    if (!text || /^\?+$/.test(text)) return '';
+    return text;
+  }
+
+  function displayDate(dateStr = '') {
+    const text = knownHeaderValue(dateStr);
+    if (!text) return '';
+    const match = text.match(/^(\d{4})(?:\.(\d{2}|\?\?))?(?:\.(\d{2}|\?\?))?$/);
+    if (!match) return text.replace(/\?+/g, '').replace(/\.+$/g, '');
+
+    const [, year, month, day] = match;
+    if (!month || month === '??') return year;
+    if (!day || day === '??') return `${year}.${month}`;
+    return `${year}.${month}.${day}`;
+  }
+
+  function gameSubtitle(headers) {
+    const parts = [
+      knownHeaderValue(headers.Event) || 'No event',
+      knownHeaderValue(headers.Site),
+      displayDate(headers.Date),
+      knownHeaderValue(headers.Result) || '*'
+    ].filter(Boolean);
+    return parts.join(' \u2022 ');
+  }
+
   function parseSortableDate(dateStr = '') {
     const match = String(dateStr || '').match(/^(\d{4})\.(\d{2})\.(\d{2})$/);
     if (!match) return 0;
@@ -100,7 +128,7 @@
           moves: verboseMoves,
           states,
           title: `${headers.White || 'White'}${headers.WhiteElo ? ` (${headers.WhiteElo})` : ''} - ${headers.Black || 'Black'}${headers.BlackElo ? ` (${headers.BlackElo})` : ''}`,
-          subtitle: `${headers.Event || 'No event'} • ${headers.Site || 'No site'} • ${headers.Date || 'No date'}`,
+          subtitle: gameSubtitle(headers),
           compactLabel: compactGameLabel(headers),
           result: headers.Result || '*',
           white: headers.White || 'White',
