@@ -69,3 +69,28 @@ if (existsSync(".openai")) {
 if (existsSync("server")) {
   copyPath("server", join(outDir, "dist", "server"));
 }
+
+const hostingClientDir = join(outDir, "dist", "client");
+mkdirSync(hostingClientDir, { recursive: true });
+
+if (existsSync("index.html")) {
+  copyPath("index.html", join(hostingClientDir, "index.html"));
+}
+
+for (const file of rootFiles) {
+  if (existsSync(file)) {
+    copyPath(file, join(hostingClientDir, file));
+  }
+}
+
+for (const entry of readdirSync(".")) {
+  if (rootAssetExtensions.has(extname(entry).toLowerCase())) {
+    copyPath(entry, join(hostingClientDir, entry));
+  }
+}
+
+for (const directory of directories) {
+  if (existsSync(directory) && directory !== "server") {
+    copyPath(directory, join(hostingClientDir, directory));
+  }
+}
