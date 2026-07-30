@@ -1,0 +1,9 @@
+{
+  "main": "dist/server/index.js",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "dist/client",
+    "not_found_handling": "none"
+  },
+  "compatibility_date": "2026-07-30"
+}
