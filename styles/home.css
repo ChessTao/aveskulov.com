@@ -5,6 +5,10 @@
   align-items: start;
 }
 
+.hero-grid-text {
+  grid-template-columns: minmax(0, 760px);
+}
+
 .hero-copy {
   padding-top: clamp(10px, 3vw, 34px);
 }

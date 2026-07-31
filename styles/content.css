@@ -20,6 +20,16 @@
   max-width: 880px;
 }
 
+.about-portrait {
+  position: sticky;
+  top: 144px;
+}
+
+.about-portrait img {
+  aspect-ratio: 4 / 5;
+  object-position: 50% 36%;
+}
+
 .method-article {
   max-width: 880px;
   margin-top: 42px;

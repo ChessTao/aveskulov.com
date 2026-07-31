@@ -22,6 +22,10 @@
     grid-template-columns: 1fr;
   }
 
+  .about-portrait {
+    position: static;
+  }
+
   .publication-card {
     grid-template-columns: 82px 1fr;
   }
