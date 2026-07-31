@@ -61,6 +61,28 @@ project_id: appgprj_6a5f7251b6ac8191a9ba89e00bd9b6bc
 www.aveskulov.com
 ```
 
+<span style="color: #15803d;">🟢 Выполнено: custom domain `www.aveskulov.com` добавлен в OpenAI Hosting, статус `pending`, SSL `pending_validation`.</span>
+
+DNS-записи, которые вернул OpenAI Hosting:
+
+```text
+CNAME
+name: www
+value: custom-domains.chatgpt.site.
+```
+
+```text
+TXT
+name: _openai-site-verification.www
+value: openai-site-verification=n9HOs-qt9-75eRSQ8uc8lHP5Qx5OOokLqlQsAwBfDdY
+```
+
+```text
+TXT
+name: _cf-custom-hostname.www
+value: 7c83cc48-3407-437b-9609-9ed2eb6ffcd0
+```
+
 2. Codex должен использовать тот же `project_id` из `.openai/hosting.json`.
 3. OpenAI Hosting вернёт DNS-записи для домена.
 4. Обычно для `www` это будет `CNAME`.
