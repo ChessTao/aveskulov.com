@@ -83,8 +83,15 @@
     .topbar-actions {
       margin-left: auto;
       flex-shrink: 0;
+      display: flex;
+      gap: 10px;
+      align-items: center;
     }
     .toolbar { display: none; }
+    .mobile-games-toggle,
+    .mobile-panel-head {
+      display: none;
+    }
     button, .action-link {
       border: 1px solid var(--border);
       background: transparent;
@@ -346,6 +353,15 @@
       min-width: 0;
     }
     .analysis-box {
+      order: -2;
+    }
+    .moves-wrap {
+      order: -1;
+    }
+    .moves-controls {
+      order: 0;
+    }
+    .analysis-box {
       background: var(--panel2);
       border: 1px solid var(--border);
       border-radius: 0;
@@ -356,11 +372,9 @@
       min-width: 0;
     }
     .analysis-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: grid;
+      align-items: start;
       gap: 12px;
-      flex-wrap: nowrap;
       min-width: 0;
     }
     .analysis-head > * {
@@ -376,8 +390,7 @@
       gap: 10px;
       align-items: center;
       flex-wrap: nowrap;
-      justify-content: flex-end;
-      flex: 0 0 auto;
+      justify-content: start;
       min-width: 0;
     }
     .analysis-mode-grid {
@@ -618,16 +631,175 @@
       .games-list, .moves-wrap { max-height: none; }
     }
     @media (max-width: 640px) {
+      body {
+        overflow-x: hidden;
+      }
+      .app {
+        width: 100vw;
+        max-width: 100vw;
+        overflow-x: hidden;
+        padding: 10px;
+        gap: 10px;
+      }
+      .topbar,
+      .layout,
+      .panel {
+        width: 100%;
+        max-width: 100%;
+      }
+      .panel {
+        padding: 12px;
+        min-width: 0;
+      }
       .topbar {
-        flex-direction: column;
-        align-items: stretch;
+        display: grid;
+        gap: 8px;
+        padding: 10px 12px;
+      }
+      .topbar > div:first-child {
+        min-width: 0;
+      }
+      .topbar h1 {
+        padding-right: 0;
+        font-size: 1rem;
+        line-height: 1.15;
       }
       .topbar-actions {
+        position: static;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        width: auto;
+        height: auto;
         margin-left: 0;
+        min-width: 0;
       }
-      .topbar-actions .action-link {
-        width: 100%;
+      .mobile-games-toggle {
+        display: inline-flex;
+        position: static;
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        min-height: 40px;
         justify-content: center;
+        padding: 0;
+        min-width: 0;
+        color: var(--accent);
+        font-size: 20px;
+        line-height: 1;
+      }
+      .return-link {
+        position: static;
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        justify-content: center;
+        padding: 0;
+      }
+      .return-link-text {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      .return-link-icon {
+        font-size: 22px;
+        line-height: 1;
+      }
+      .layout {
+        gap: 10px;
+        min-width: 0;
+      }
+      .board-col {
+        order: 1;
+      }
+      .moves-col {
+        order: 2;
+      }
+      .games-panel {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 80;
+        order: 3;
+        max-height: min(68vh, 560px);
+        padding: 12px;
+        border-right: 0;
+        border-bottom: 0;
+        border-left: 0;
+        box-shadow: 0 -18px 42px rgba(34, 35, 31, 0.24);
+        transform: translateY(calc(100% + 16px));
+        transition: transform 180ms ease;
+      }
+      .app.games-list-open .games-panel {
+        transform: translateY(0);
+      }
+      .mobile-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+      .mobile-panel-head h2 {
+        margin: 0;
+        color: var(--accent);
+        font-size: 1rem;
+      }
+      .panel-close-btn {
+        width: 38px;
+        height: 38px;
+        justify-content: center;
+        padding: 0;
+        font-size: 24px;
+        line-height: 1;
+      }
+      .games-list {
+        max-height: calc(min(68vh, 560px) - 62px);
+      }
+      .board-head {
+        min-height: 0;
+      }
+      .board-title {
+        font-size: 1rem;
+      }
+      .board-subtitle {
+        font-size: 0.9rem;
+      }
+      .board-shell {
+        width: min(100%, calc(100vw - 72px));
+        max-width: calc(100vw - 72px);
+        padding-right: 0;
+      }
+      .board {
+        width: 100%;
+        min-width: 0;
+      }
+      .board-resize-handle {
+        display: none;
+      }
+      .analysis-head {
+        gap: 10px;
+      }
+      .analysis-controls {
+        display: grid;
+        grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+        width: 100%;
+      }
+      .analysis-mode-grid {
+        grid-template-columns: repeat(4, minmax(38px, 1fr));
+      }
+      .analysis-lines-control {
+        min-width: 0;
+      }
+      .analysis-lines-row {
+        grid-template-columns: minmax(76px, 1fr) auto;
+      }
+      .moves-wrap {
+        max-height: 42vh;
       }
       .board-footer-actions {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -635,5 +807,13 @@
           "prev next"
           "flip fen"
           "download-game download-all";
+      }
+      .board-footer-actions button,
+      .moves-controls button {
+        min-width: 0;
+        padding: 10px 8px;
+        justify-content: center;
+        font-size: 0.82rem;
+        white-space: normal;
       }
     }

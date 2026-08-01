@@ -23,9 +23,12 @@ const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const RANKS = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
 const boardEl = document.getElementById('board');
+const appEl = document.querySelector('.app');
 const boardShellEl = document.querySelector('.board-shell');
 const boardResizeHandleEl = document.getElementById('boardResizeHandle');
 const gamesListEl = document.getElementById('gamesList');
+const gamesMenuToggleEl = document.getElementById('gamesMenuToggle');
+const gamesMenuCloseEl = document.getElementById('gamesMenuClose');
 const movesWrapEl = document.getElementById('movesWrap');
 const boardTitleEl = document.getElementById('boardTitle');
 const boardSubtitleEl = document.getElementById('boardSubtitle');
@@ -89,6 +92,12 @@ const state = {
 
 const BOARD_MIN_SIZE = 320;
 let keyboardScope = 'viewer';
+
+function setGamesMenuOpen(isOpen) {
+  if (!appEl || !gamesMenuToggleEl) return;
+  appEl.classList.toggle('games-list-open', isOpen);
+  gamesMenuToggleEl.setAttribute('aria-expanded', String(isOpen));
+}
 
 function currentGame() {
   return state.games[state.gameIndex] || null;
@@ -419,6 +428,7 @@ function selectGame(index) {
   refresh({ renderMoves: true });
   renderer.updateGamesSelectionState();
   updateGameNavButtons();
+  setGamesMenuOpen(false);
 }
 
 function legalMovesFrom(square, chess = positionCache.currentChess()) {
@@ -519,6 +529,19 @@ boardEl.addEventListener('click', (event) => {
   onSquareClick(event);
 });
 
+if (gamesMenuToggleEl) {
+  gamesMenuToggleEl.addEventListener('click', () => {
+    setKeyboardScope('games');
+    setGamesMenuOpen(!appEl?.classList.contains('games-list-open'));
+  });
+}
+
+if (gamesMenuCloseEl) {
+  gamesMenuCloseEl.addEventListener('click', () => {
+    setGamesMenuOpen(false);
+  });
+}
+
 movesWrapEl.addEventListener('click', (event) => {
   setKeyboardScope('viewer');
   const replayBtn = event.target.closest('.move-btn[data-replay-index]');
@@ -602,6 +625,10 @@ analysisPauseBtnEl.addEventListener('click', () => {
 });
 
 window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    setGamesMenuOpen(false);
+  }
+
   if (keyboardScope === 'games') {
     if (event.key === 'ArrowUp') {
       event.preventDefault();

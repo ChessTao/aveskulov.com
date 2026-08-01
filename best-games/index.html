@@ -14,12 +14,20 @@
         <h1>My Best Games</h1>
       </div>
       <div class="topbar-actions">
-        <a class="action-link" href="../index.html">Return to main page</a>
+        <button id="gamesMenuToggle" class="mobile-games-toggle" type="button" aria-label="Open games list" aria-controls="gamesPanel" aria-expanded="false">☰</button>
+        <a class="action-link return-link" href="../index.html" aria-label="Return to main page">
+          <span class="return-link-icon" aria-hidden="true">←</span>
+          <span class="return-link-text">Return to main page</span>
+        </a>
       </div>
     </div>
 
     <div class="layout">
-      <section class="panel">
+      <section id="gamesPanel" class="panel games-panel">
+        <div class="mobile-panel-head">
+          <h2>Games</h2>
+          <button id="gamesMenuClose" class="panel-close-btn" type="button" aria-label="Close games list">×</button>
+        </div>
         <div id="gamesList" class="games-list"></div>
       </section>
 
