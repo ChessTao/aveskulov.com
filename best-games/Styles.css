@@ -585,6 +585,9 @@
       font-size: 18px;
       line-height: 1;
     }
+    .button-icon {
+      display: none;
+    }
     .moves-controls {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -718,6 +721,15 @@
       .moves-col {
         order: 2;
       }
+      .moves-wrap {
+        order: 1;
+      }
+      .moves-controls {
+        order: 2;
+      }
+      .analysis-box {
+        order: 3;
+      }
       .games-panel {
         position: fixed;
         left: 0;
@@ -781,13 +793,21 @@
       .board-resize-handle {
         display: none;
       }
+      .analysis-box {
+        padding: 10px;
+        gap: 7px;
+      }
       .analysis-head {
         gap: 10px;
+      }
+      .analysis-line {
+        font-size: 0.86rem;
       }
       .analysis-controls {
         display: grid;
         grid-template-columns: minmax(0, auto) minmax(0, 1fr);
         width: 100%;
+        gap: 8px;
       }
       .analysis-mode-grid {
         grid-template-columns: repeat(4, minmax(38px, 1fr));
@@ -798,15 +818,19 @@
       .analysis-lines-row {
         grid-template-columns: minmax(76px, 1fr) auto;
       }
+      .pv-line {
+        min-height: calc(1.35em * 3);
+        max-height: calc(1.35em * 3);
+        line-height: 1.35;
+      }
       .moves-wrap {
-        max-height: 42vh;
+        max-height: 188px;
       }
       .board-footer-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, 42px);
         grid-template-areas:
-          "prev next"
-          "flip fen"
-          "download-game download-all";
+          "flip download-game download-all";
+        gap: 8px;
       }
       .board-footer-actions button,
       .moves-controls button {
@@ -815,5 +839,34 @@
         justify-content: center;
         font-size: 0.82rem;
         white-space: normal;
+      }
+      .board-footer-actions #prevGameBtn,
+      .board-footer-actions #nextGameBtn,
+      .board-footer-actions #copyFenBtn {
+        display: none;
+      }
+      .board-footer-actions #flipBtn,
+      .board-footer-actions #downloadGameBtn,
+      .board-footer-actions #downloadAllGamesBtn {
+        width: 42px;
+        height: 40px;
+        padding: 0;
+        font-size: 1rem;
+      }
+      .board-footer-actions .button-text {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      .board-footer-actions .button-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        line-height: 1;
       }
     }

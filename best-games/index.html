@@ -45,10 +45,19 @@
         </div>
 
         <div class="board-footer-actions">
-          <button id="downloadGameBtn" type="button">Download game</button>
-          <button id="downloadAllGamesBtn" type="button">Download all games</button>
+          <button id="downloadGameBtn" class="download-current-btn" type="button" title="Download current game" aria-label="Download current game">
+            <span class="button-icon" aria-hidden="true">&#x21E9;1</span>
+            <span class="button-text">Download game</span>
+          </button>
+          <button id="downloadAllGamesBtn" class="download-all-btn" type="button" title="Download all games" aria-label="Download all games">
+            <span class="button-icon" aria-hidden="true">&#x21E9;*</span>
+            <span class="button-text">Download all games</span>
+          </button>
           <button id="prevGameBtn" type="button" title="Previous game" aria-label="Previous game">◀</button>
-          <button id="flipBtn">Flip board</button>
+          <button id="flipBtn" type="button" title="Flip board" aria-label="Flip board">
+            <span class="button-icon" aria-hidden="true">&#x21BB;</span>
+            <span class="button-text">Flip board</span>
+          </button>
           <button id="copyFenBtn">Copy FEN</button>
           <button id="nextGameBtn" type="button" title="Next game" aria-label="Next game">▶</button>
         </div>
