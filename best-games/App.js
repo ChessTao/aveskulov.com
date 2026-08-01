@@ -37,6 +37,8 @@ const blackTurnDotEl = document.getElementById('blackTurnDot');
 const resetAnalysisBtnEl = document.getElementById('resetAnalysisBtn');
 const prevGameBtnEl = document.getElementById('prevGameBtn');
 const nextGameBtnEl = document.getElementById('nextGameBtn');
+const downloadMenuToggleEl = document.getElementById('downloadMenuToggle');
+const downloadMenuEl = document.getElementById('downloadMenu');
 const downloadGameBtnEl = document.getElementById('downloadGameBtn');
 const downloadAllGamesBtnEl = document.getElementById('downloadAllGamesBtn');
 const engineStateEl = document.getElementById('engineState');
@@ -97,6 +99,12 @@ function setGamesMenuOpen(isOpen) {
   if (!appEl || !gamesMenuToggleEl) return;
   appEl.classList.toggle('games-list-open', isOpen);
   gamesMenuToggleEl.setAttribute('aria-expanded', String(isOpen));
+}
+
+function setDownloadMenuOpen(isOpen) {
+  if (!downloadMenuToggleEl || !downloadMenuEl) return;
+  downloadMenuEl.classList.toggle('open', isOpen);
+  downloadMenuToggleEl.setAttribute('aria-expanded', String(isOpen));
 }
 
 function currentGame() {
@@ -602,11 +610,19 @@ document.getElementById('copyFenBtn').addEventListener('click', async () => {
     await navigator.clipboard.writeText(fen);
   } catch (_) {}
 });
+if (downloadMenuToggleEl) {
+  downloadMenuToggleEl.addEventListener('click', (event) => {
+    event.stopPropagation();
+    setDownloadMenuOpen(!downloadMenuEl?.classList.contains('open'));
+  });
+}
 downloadGameBtnEl.addEventListener('click', () => {
   downloadCurrentGame();
+  setDownloadMenuOpen(false);
 });
 downloadAllGamesBtnEl.addEventListener('click', () => {
   downloadAllGames();
+  setDownloadMenuOpen(false);
 });
 analysisDepthBtnEl.addEventListener('click', () => {
   setAnalysisMode('depth20');
@@ -627,6 +643,7 @@ analysisPauseBtnEl.addEventListener('click', () => {
 window.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     setGamesMenuOpen(false);
+    setDownloadMenuOpen(false);
   }
 
   if (keyboardScope === 'games') {
@@ -663,12 +680,19 @@ window.addEventListener('keydown', (event) => {
   if (event.key === 'End') goToReplay(currentGame().moves.length);
 });
 
+window.addEventListener('click', (event) => {
+  if (!downloadMenuEl?.classList.contains('open')) return;
+  if (event.target.closest('.download-menu-wrap')) return;
+  setDownloadMenuOpen(false);
+});
+
 window.addEventListener('resize', () => {
   if (!state.boardSize) return;
   applyBoardSize();
 });
 
 async function boot() {
+  if (downloadMenuToggleEl) downloadMenuToggleEl.disabled = true;
   downloadGameBtnEl.disabled = true;
   downloadAllGamesBtnEl.disabled = true;
   applyBoardSize();
@@ -707,6 +731,7 @@ async function boot() {
     return;
   }
 
+  if (downloadMenuToggleEl) downloadMenuToggleEl.disabled = false;
   downloadGameBtnEl.disabled = false;
   downloadAllGamesBtnEl.disabled = false;
   applyBoardSize();

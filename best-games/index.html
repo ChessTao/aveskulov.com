@@ -37,29 +37,33 @@
           <div id="boardSubtitle" class="board-subtitle"></div>
         </div>
 
-        <div class="board-shell">
-          <div id="board" class="board"></div>
-          <span id="whiteTurnDot" class="turn-dot white"></span>
-          <span id="blackTurnDot" class="turn-dot black"></span>
-          <button id="boardResizeHandle" class="board-resize-handle" type="button" title="Resize board" aria-label="Resize board"></button>
-        </div>
+        <div class="board-stage">
+          <div class="board-shell">
+            <div id="board" class="board"></div>
+            <span id="whiteTurnDot" class="turn-dot white"></span>
+            <span id="blackTurnDot" class="turn-dot black"></span>
+            <button id="boardResizeHandle" class="board-resize-handle" type="button" title="Resize board" aria-label="Resize board"></button>
+          </div>
 
-        <div class="board-footer-actions">
-          <button id="downloadGameBtn" class="download-current-btn" type="button" title="Download current game" aria-label="Download current game">
-            <span class="button-icon" aria-hidden="true">&#x21E9;1</span>
-            <span class="button-text">Download game</span>
-          </button>
-          <button id="downloadAllGamesBtn" class="download-all-btn" type="button" title="Download all games" aria-label="Download all games">
-            <span class="button-icon" aria-hidden="true">&#x21E9;*</span>
-            <span class="button-text">Download all games</span>
-          </button>
-          <button id="prevGameBtn" type="button" title="Previous game" aria-label="Previous game">◀</button>
-          <button id="flipBtn" type="button" title="Flip board" aria-label="Flip board">
-            <span class="button-icon" aria-hidden="true">&#x21BB;</span>
-            <span class="button-text">Flip board</span>
-          </button>
-          <button id="copyFenBtn">Copy FEN</button>
-          <button id="nextGameBtn" type="button" title="Next game" aria-label="Next game">▶</button>
+          <div class="board-footer-actions">
+            <button id="prevGameBtn" type="button" title="Previous game" aria-label="Previous game">◀</button>
+            <button id="flipBtn" type="button" title="Flip board" aria-label="Flip board">
+              <span class="button-icon" aria-hidden="true">&#x21BB;</span>
+              <span class="button-text">Flip board</span>
+            </button>
+            <button id="copyFenBtn">Copy FEN</button>
+            <div class="download-menu-wrap">
+              <button id="downloadMenuToggle" class="download-menu-toggle" type="button" title="Download PGN" aria-label="Download PGN" aria-haspopup="true" aria-expanded="false">
+                <span class="button-icon" aria-hidden="true">&#x21E9;</span>
+                <span class="button-text">Download</span>
+              </button>
+              <div id="downloadMenu" class="download-menu" role="menu">
+                <button id="downloadGameBtn" class="download-current-btn" type="button" role="menuitem">Current game</button>
+                <button id="downloadAllGamesBtn" class="download-all-btn" type="button" role="menuitem">All games</button>
+              </div>
+            </div>
+            <button id="nextGameBtn" type="button" title="Next game" aria-label="Next game">▶</button>
+          </div>
         </div>
       </section>
 

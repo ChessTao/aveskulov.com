@@ -220,6 +220,10 @@
     .subline, .meta-line, .small-note { color: var(--muted); font-size: 13px; }
     .subline { margin-top: 5px; }
     .board-col { display: grid; gap: 14px; }
+    .board-stage {
+      display: grid;
+      gap: 14px;
+    }
     .board-shell {
       position: relative;
       width: min(100%, 700px, calc(100vh - 340px));
@@ -565,7 +569,7 @@
       grid-template-columns: auto auto auto auto;
       grid-template-areas:
         "prev flip fen next"
-        ". download-game download-all .";
+        ". download-game download-game .";
       gap: 10px;
       justify-content: center;
       align-items: center;
@@ -573,8 +577,7 @@
     .board-footer-actions #prevGameBtn { grid-area: prev; }
     .board-footer-actions #flipBtn { grid-area: flip; }
     .board-footer-actions #copyFenBtn { grid-area: fen; }
-    .board-footer-actions #downloadGameBtn { grid-area: download-game; }
-    .board-footer-actions #downloadAllGamesBtn { grid-area: download-all; }
+    .board-footer-actions .download-menu-wrap { grid-area: download-game; }
     .board-footer-actions #nextGameBtn { grid-area: next; }
     .board-footer-actions #prevGameBtn,
     .board-footer-actions #nextGameBtn {
@@ -587,6 +590,33 @@
     }
     .button-icon {
       display: none;
+    }
+    .download-menu-wrap {
+      position: relative;
+      display: inline-flex;
+      justify-content: center;
+    }
+    .download-menu {
+      position: absolute;
+      right: 0;
+      bottom: calc(100% + 8px);
+      z-index: 40;
+      display: none;
+      min-width: 168px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      box-shadow: 0 16px 36px rgba(34, 35, 31, 0.18);
+    }
+    .download-menu.open {
+      display: grid;
+      gap: 6px;
+    }
+    .download-menu button {
+      width: 100%;
+      justify-content: flex-start;
+      padding: 9px 10px;
+      font-size: 13px;
     }
     .moves-controls {
       display: grid;
@@ -722,10 +752,10 @@
         order: 2;
       }
       .moves-wrap {
-        order: 1;
+        order: 2;
       }
       .moves-controls {
-        order: 2;
+        order: 1;
       }
       .analysis-box {
         order: 3;
@@ -781,10 +811,16 @@
       .board-subtitle {
         font-size: 0.9rem;
       }
+      .board-stage {
+        grid-template-columns: minmax(0, 1fr) 44px;
+        gap: 8px;
+        align-items: start;
+      }
       .board-shell {
-        width: min(100%, calc(100vw - 72px));
-        max-width: calc(100vw - 72px);
+        width: min(100%, calc(100vw - 96px));
+        max-width: calc(100vw - 96px);
         padding-right: 0;
+        margin: 0;
       }
       .board {
         width: 100%;
@@ -827,10 +863,13 @@
         max-height: 188px;
       }
       .board-footer-actions {
-        grid-template-columns: repeat(3, 42px);
+        grid-template-columns: 42px;
         grid-template-areas:
-          "flip download-game download-all";
+          "flip"
+          "download-game";
         gap: 8px;
+        justify-content: stretch;
+        align-content: start;
       }
       .board-footer-actions button,
       .moves-controls button {
@@ -846,8 +885,7 @@
         display: none;
       }
       .board-footer-actions #flipBtn,
-      .board-footer-actions #downloadGameBtn,
-      .board-footer-actions #downloadAllGamesBtn {
+      .board-footer-actions #downloadMenuToggle {
         width: 42px;
         height: 40px;
         padding: 0;
@@ -868,5 +906,35 @@
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 700;
         line-height: 1;
+      }
+      .download-menu {
+        right: 0;
+        bottom: auto;
+        top: calc(100% + 8px);
+        min-width: 150px;
+      }
+      .moves-controls {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .moves-nav-group {
+        grid-column: 1;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr 1.25fr 0.75fr;
+        gap: 8px;
+      }
+      .moves-nav-group button {
+        width: 100%;
+        min-height: 42px;
+        font-size: 1rem;
+      }
+      .moves-nav-group #prevBtn,
+      .moves-nav-group #nextBtn {
+        font-size: 1.12rem;
+      }
+      .analysis-return-btn {
+        grid-column: 1;
+        justify-self: end;
       }
     }
