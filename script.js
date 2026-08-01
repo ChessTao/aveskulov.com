@@ -1,8 +1,20 @@
 const tabs = Array.from(document.querySelectorAll("[data-tab]"));
 const panels = Array.from(document.querySelectorAll("[data-panel]"));
 const tabLinks = Array.from(document.querySelectorAll("[data-tab-link]"));
+const topbar = document.querySelector(".topbar");
+const menuToggle = document.querySelector("[data-menu-toggle]");
 const contactForm = document.querySelector(".contact-form");
 const campSignupForm = document.querySelector("[data-camp-signup-form]");
+
+function setMenuOpen(isOpen) {
+  if (!topbar || !menuToggle) {
+    return;
+  }
+
+  topbar.classList.toggle("is-menu-open", isOpen);
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+}
 
 function activateTab(tabName, shouldFocus = false) {
   const targetPanel = panels.find((panel) => panel.dataset.panel === tabName);
@@ -27,7 +39,21 @@ function activateTab(tabName, shouldFocus = false) {
     targetPanel.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  setMenuOpen(false);
 }
+
+if (menuToggle) {
+  menuToggle.addEventListener("click", () => {
+    setMenuOpen(!topbar?.classList.contains("is-menu-open"));
+  });
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    setMenuOpen(false);
+  }
+});
 
 tabs.forEach((tab) => {
   tab.setAttribute("role", "tab");

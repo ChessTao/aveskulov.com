@@ -59,6 +59,10 @@
   display: none;
 }
 
+.menu-toggle {
+  display: none;
+}
+
 .tab {
   min-height: 38px;
   flex: 0 0 auto;
