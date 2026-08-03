@@ -66,11 +66,7 @@ if (existsSync(".openai")) {
   copyPath(".openai", join(outDir, ".openai"));
 }
 
-if (existsSync("server")) {
-  copyPath("server", join(outDir, "dist", "server"));
-}
-
-const hostingClientDir = join(outDir, "dist", "client");
+const hostingClientDir = join(outDir, "client");
 mkdirSync(hostingClientDir, { recursive: true });
 
 if (existsSync("index.html")) {
