@@ -84,9 +84,38 @@ export default {
       return Response.json({ message: "Accepted." }, { status: 202 });
     }
 
-    return env.ASSETS.fetch(request);
+    return serveAsset(request, env);
   },
 };
+
+async function serveAsset(request, env) {
+  const response = await env.ASSETS.fetch(request);
+
+  if (response.status !== 404 || !["GET", "HEAD"].includes(request.method)) {
+    return response;
+  }
+
+  const url = new URL(request.url);
+  const path = url.pathname;
+  const candidates = [];
+
+  if (path.endsWith("/")) {
+    candidates.push(`${path}index.html`);
+  } else if (!path.split("/").pop().includes(".")) {
+    candidates.push(`${path}/index.html`);
+  }
+
+  candidates.push("/index.html");
+
+  for (const candidate of candidates) {
+    const assetUrl = new URL(request.url);
+    assetUrl.pathname = candidate;
+    const assetResponse = await env.ASSETS.fetch(new Request(assetUrl, request));
+    if (assetResponse.status !== 404) return assetResponse;
+  }
+
+  return response;
+}
 
 async function sendWebhook(env, payload) {
   if (!env.CAMP_SIGNUP_WEBHOOK_URL) {
