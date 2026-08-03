@@ -29,6 +29,23 @@
     let sortedGamesSortKey = null;
     let sortedGamesSortDir = null;
     const boardSquareEls = new Map();
+    const loadedPieceImages = new Set();
+    const failedPieceImages = new Set();
+
+    function preloadPieces() {
+      Object.values(PIECES).forEach((src) => {
+        const img = new Image();
+        img.onload = () => {
+          loadedPieceImages.add(src);
+          failedPieceImages.delete(src);
+        };
+        img.onerror = () => {
+          failedPieceImages.add(src);
+          loadedPieceImages.delete(src);
+        };
+        img.src = src;
+      });
+    }
 
     function boardSquares() {
       const files = state.orientation === 'white' ? FILES : [...FILES].reverse();
@@ -95,20 +112,50 @@
 
     function syncSquarePiece(squareEl, code) {
       const currentCode = squareEl.dataset.piece || '';
-      if (currentCode === (code || '')) return;
-
-      squareEl.dataset.piece = code || '';
       const existingPiece = squareEl.querySelector('img.piece');
+
       if (!code) {
+        squareEl.dataset.piece = '';
         if (existingPiece) existingPiece.remove();
         return;
       }
 
+      const pieceSrc = PIECES[code];
+      const existingSrc = existingPiece ? existingPiece.getAttribute('src') : '';
+      const imageLooksReady = existingPiece
+        && existingPiece.complete
+        && existingPiece.naturalWidth > 0
+        && existingSrc === pieceSrc
+        && !failedPieceImages.has(pieceSrc);
+
+      if (currentCode === code && imageLooksReady) return;
+
+      squareEl.dataset.piece = code;
+
       const pieceEl = existingPiece || document.createElement('img');
       pieceEl.className = 'piece';
-      pieceEl.src = PIECES[code];
+      pieceEl.onload = () => {
+        loadedPieceImages.add(pieceSrc);
+        failedPieceImages.delete(pieceSrc);
+      };
+      pieceEl.onerror = () => {
+        failedPieceImages.add(pieceSrc);
+        loadedPieceImages.delete(pieceSrc);
+        squareEl.dataset.piece = '';
+      };
       pieceEl.alt = code;
       if (!existingPiece) squareEl.insertBefore(pieceEl, squareEl.firstChild);
+      if (existingSrc !== pieceSrc || !loadedPieceImages.has(pieceSrc)) pieceEl.src = pieceSrc;
+    }
+
+    function repairBoardImages() {
+      boardSquareEls.forEach((squareEl) => {
+        const img = squareEl.querySelector('img.piece');
+        if (!img) return;
+        if (img.complete && img.naturalWidth > 0) return;
+        squareEl.dataset.piece = '';
+      });
+      renderBoard();
     }
 
     function renderBoard() {
@@ -431,6 +478,8 @@
     return {
       getSortedGames,
       invalidateSortedGames,
+      preloadPieces,
+      repairBoardImages,
       renderBoard,
       renderGamesList,
       renderMoves,

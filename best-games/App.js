@@ -691,10 +691,19 @@ window.addEventListener('resize', () => {
   applyBoardSize();
 });
 
+window.addEventListener('pageshow', () => {
+  renderer.repairBoardImages();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') renderer.repairBoardImages();
+});
+
 async function boot() {
   if (downloadMenuToggleEl) downloadMenuToggleEl.disabled = true;
   downloadGameBtnEl.disabled = true;
   downloadAllGamesBtnEl.disabled = true;
+  renderer.preloadPieces();
   applyBoardSize();
   renderer.renderBoard();
 
