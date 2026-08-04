@@ -6,6 +6,10 @@ const menuToggle = document.querySelector("[data-menu-toggle]");
 const contactForm = document.querySelector(".contact-form");
 const campSignupForm = document.querySelector("[data-camp-signup-form]");
 
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
 function setMenuOpen(isOpen) {
   if (!topbar || !menuToggle) {
     return;
@@ -83,6 +87,10 @@ tabLinks.forEach((link) => {
 if (window.location.hash) {
   activateTab(window.location.hash.slice(1));
 }
+
+requestAnimationFrame(() => {
+  window.scrollTo(0, 0);
+});
 
 if (contactForm) {
   const status = contactForm.querySelector("[data-contact-status]");
