@@ -39,11 +39,17 @@
         </div>
 
         <div class="board-stage">
-          <div class="board-shell">
-            <div id="board" class="board"></div>
-            <span id="whiteTurnDot" class="turn-dot white"></span>
-            <span id="blackTurnDot" class="turn-dot black"></span>
-            <button id="boardResizeHandle" class="board-resize-handle" type="button" title="Resize board" aria-label="Resize board"></button>
+          <div class="board-row">
+            <div class="board-eval-meter" aria-hidden="true">
+              <div id="evalMeterFill" class="eval-meter-fill"></div>
+              <div class="eval-meter-zero"></div>
+            </div>
+            <div class="board-shell">
+              <div id="board" class="board"></div>
+              <span id="whiteTurnDot" class="turn-dot white"></span>
+              <span id="blackTurnDot" class="turn-dot black"></span>
+              <button id="boardResizeHandle" class="board-resize-handle" type="button" title="Resize board" aria-label="Resize board"></button>
+            </div>
           </div>
 
           <div class="board-footer-actions">
@@ -99,13 +105,7 @@
               </div>
             </div>
           </div>
-          <div class="eval-wrap">
-            <div class="eval-meter" aria-hidden="true">
-              <div id="evalMeterFill" class="eval-meter-fill"></div>
-              <div class="eval-meter-zero"></div>
-            </div>
-            <div id="evalLine" class="analysis-line">Depth: -</div>
-          </div>
+          <div id="evalLine" class="analysis-line">Depth: -</div>
           <div id="pvLine" class="pv-line">-</div>
         </div>
       </section>

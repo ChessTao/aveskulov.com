@@ -216,6 +216,14 @@
       display: grid;
       gap: 14px;
     }
+    .board-row {
+      display: grid;
+      grid-template-columns: 14px minmax(0, auto);
+      gap: 10px;
+      justify-content: center;
+      align-items: stretch;
+      min-width: 0;
+    }
     .board-shell {
       position: relative;
       width: min(100%, 700px, calc(100vh - 340px));
@@ -462,20 +470,15 @@
       scrollbar-gutter: stable;
       overflow-wrap: anywhere;
     }
-    .eval-wrap {
-      display: grid;
-      grid-template-columns: 14px minmax(0, 1fr);
-      gap: 9px;
-      align-items: center;
-      min-width: 0;
-    }
-    .eval-meter {
+    .board-eval-meter {
       position: relative;
       width: 12px;
-      height: 54px;
+      height: 100%;
+      min-height: 320px;
       border: 1px solid var(--border);
       background: linear-gradient(180deg, #f6f7fb 0 50%, #20231f 50% 100%);
       overflow: hidden;
+      align-self: stretch;
     }
     .eval-meter-fill {
       position: absolute;
@@ -881,6 +884,14 @@
         grid-template-columns: minmax(0, 1fr) 44px;
         gap: 8px;
         align-items: start;
+      }
+      .board-row {
+        grid-template-columns: 10px minmax(0, 1fr);
+        gap: 6px;
+      }
+      .board-eval-meter {
+        width: 10px;
+        min-height: 0;
       }
       .board-shell {
         width: min(100%, calc(100vw - 96px));
