@@ -114,7 +114,7 @@
     button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
     .layout {
       display: grid;
-      grid-template-columns: minmax(520px, 1.35fr) minmax(420px, 760px) 420px;
+      grid-template-columns: minmax(420px, 0.95fr) minmax(420px, 760px) 420px;
       gap: 18px;
       align-items: start;
     }
@@ -128,17 +128,19 @@
       background: var(--panel2);
     }
     .games-table {
-      width: max-content;
-      min-width: 100%;
+      width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 12.5px;
     }
     .games-table th,
     .games-table td {
-      padding: 10px 12px;
+      padding: 9px 8px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .games-table th {
       position: sticky;
@@ -168,29 +170,19 @@
     }
     .games-table th:first-child,
     .games-table td.index-cell {
-      width: 30px;
-      min-width: 30px;
-      padding-left: 4px;
-      padding-right: 1px;
+      width: 34px;
+      padding-left: 6px;
+      padding-right: 4px;
       text-align: left;
     }
     .games-table th:nth-child(2),
-    .games-table td:nth-child(2) {
-      padding-left: 5px;
-    }
-    .games-table td.event-cell {
-      white-space: normal;
-      min-width: 240px;
-      line-height: 1.35;
-    }
+    .games-table td:nth-child(2) { width: 33%; }
+    .games-table th:nth-child(3),
+    .games-table td:nth-child(3) { width: 72px; text-align: center; }
     .games-table th:nth-child(4),
-    .games-table td:nth-child(4) {
-      padding-right: 3px;
-    }
+    .games-table td:nth-child(4) { width: 33%; }
     .games-table th:nth-child(5),
-    .games-table td:nth-child(5) {
-      padding-left: 3px;
-    }
+    .games-table td:nth-child(5) { width: 62px; }
     .table-sort-btn {
       appearance: none;
       -webkit-appearance: none;
@@ -405,19 +397,13 @@
     }
     .analysis-lines-control {
       display: grid;
-      gap: 4px;
-      min-width: 140px;
+      gap: 5px;
+      min-width: 126px;
     }
     .analysis-lines-label {
       color: var(--muted);
       font-size: 12px;
       line-height: 1.2;
-    }
-    .analysis-lines-row {
-      display: grid;
-      grid-template-columns: 96px auto;
-      gap: 8px;
-      align-items: center;
     }
     .analysis-mode-btn,
     .analysis-icon-btn {
@@ -432,14 +418,32 @@
       padding-top: 7px;
       padding-bottom: 7px;
     }
-    .analysis-lines-range {
-      width: 100%;
-      accent-color: var(--accent);
+    .analysis-lines-stepper {
+      display: grid;
+      grid-template-columns: 34px 42px 34px;
+      gap: 6px;
+      align-items: center;
+    }
+    .analysis-step-btn {
+      width: 34px;
+      min-width: 34px;
+      height: 34px;
+      padding: 0;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      line-height: 1;
     }
     .analysis-lines-value {
-      min-width: 22px;
+      min-width: 42px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      background: rgba(244, 240, 231, 0.58);
       text-align: center;
-      font-size: 13px;
+      font-size: 15px;
       color: var(--text);
     }
     .analysis-mode-btn.active {
@@ -457,6 +461,39 @@
       white-space: pre-line;
       scrollbar-gutter: stable;
       overflow-wrap: anywhere;
+    }
+    .eval-wrap {
+      display: grid;
+      grid-template-columns: 14px minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      min-width: 0;
+    }
+    .eval-meter {
+      position: relative;
+      width: 12px;
+      height: 54px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #f6f7fb 0 50%, #20231f 50% 100%);
+      overflow: hidden;
+    }
+    .eval-meter-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 50%;
+      background: #234b3d;
+      opacity: 0.86;
+      transition: height .18s ease;
+    }
+    .eval-meter-zero {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: rgba(167, 101, 60, 0.75);
     }
     .moves-wrap {
       background: var(--panel2);
@@ -566,10 +603,9 @@
     }
     .board-footer-actions {
       display: grid;
-      grid-template-columns: auto auto auto auto;
+      grid-template-columns: repeat(5, 46px);
       grid-template-areas:
-        "prev flip fen next"
-        ". download-game download-game .";
+        "prev flip fen download-game next";
       gap: 10px;
       justify-content: center;
       align-items: center;
@@ -580,16 +616,38 @@
     .board-footer-actions .download-menu-wrap { grid-area: download-game; }
     .board-footer-actions #nextGameBtn { grid-area: next; }
     .board-footer-actions #prevGameBtn,
-    .board-footer-actions #nextGameBtn {
+    .board-footer-actions #nextGameBtn,
+    .board-footer-actions #flipBtn,
+    .board-footer-actions #copyFenBtn,
+    .board-footer-actions #downloadMenuToggle {
+      width: 46px;
       min-width: 46px;
-      padding-left: 12px;
-      padding-right: 12px;
+      height: 46px;
+      padding: 0;
       justify-content: center;
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1;
     }
+    .board-footer-actions #copyFenBtn {
+      font-size: 12px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+    }
     .button-icon {
-      display: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .board-footer-actions .button-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
     }
     .download-menu-wrap {
       position: relative;
@@ -657,7 +715,15 @@
       font-size: 13px;
     }
     @media (max-width: 1420px) {
-      .layout { grid-template-columns: minmax(440px, 1.2fr) minmax(380px, 1fr) 360px; }
+      .layout { grid-template-columns: minmax(390px, 0.92fr) minmax(380px, 1fr) 360px; }
+      .games-table {
+        font-size: 12px;
+      }
+      .games-table th,
+      .games-table td {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
     }
     @media (max-width: 1180px) {
       .layout { grid-template-columns: 1fr; }
@@ -851,8 +917,17 @@
       .analysis-lines-control {
         min-width: 0;
       }
-      .analysis-lines-row {
-        grid-template-columns: minmax(76px, 1fr) auto;
+      .analysis-lines-stepper {
+        grid-template-columns: 32px 38px 32px;
+      }
+      .analysis-step-btn {
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+      }
+      .analysis-lines-value {
+        min-width: 38px;
+        height: 32px;
       }
       .pv-line {
         min-height: calc(1.35em * 3);
@@ -866,6 +941,7 @@
         grid-template-columns: 42px;
         grid-template-areas:
           "flip"
+          "fen"
           "download-game";
         gap: 8px;
         justify-content: stretch;
@@ -880,11 +956,11 @@
         white-space: normal;
       }
       .board-footer-actions #prevGameBtn,
-      .board-footer-actions #nextGameBtn,
-      .board-footer-actions #copyFenBtn {
+      .board-footer-actions #nextGameBtn {
         display: none;
       }
       .board-footer-actions #flipBtn,
+      .board-footer-actions #copyFenBtn,
       .board-footer-actions #downloadMenuToggle {
         width: 42px;
         height: 40px;

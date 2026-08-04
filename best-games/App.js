@@ -46,9 +46,11 @@ const analysisPlayBtnEl = document.getElementById('analysisPlayBtn');
 const analysisPauseBtnEl = document.getElementById('analysisPauseBtn');
 const analysisDepthBtnEl = document.getElementById('analysisDepthBtn');
 const analysisInfiniteBtnEl = document.getElementById('analysisInfiniteBtn');
-const analysisLinesRangeEl = document.getElementById('analysisLinesRange');
+const analysisLinesMinusBtnEl = document.getElementById('analysisLinesMinusBtn');
+const analysisLinesPlusBtnEl = document.getElementById('analysisLinesPlusBtn');
 const analysisLinesValueEl = document.getElementById('analysisLinesValue');
 const evalLineEl = document.getElementById('evalLine');
+const evalMeterFillEl = document.getElementById('evalMeterFill');
 const pvLineEl = document.getElementById('pvLine');
 const ANALYSIS_MODES = ['depth20', 'infinite'];
 const ANALYSIS_LINE_COUNTS = [1, 2, 3, 4, 5];
@@ -56,7 +58,7 @@ const START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
 const stockfish = typeof window.createStockfishController === 'function'
   ? window.createStockfishController({
-      onStateChange: ({ engineStatus, engineState, evalText, pvText }) => {
+      onStateChange: ({ engineStatus, engineState, evalText, evalScore, pvText }) => {
         if (engineStatus === 'error') state.engineEnabled = false;
         if (!state.engineEnabled && engineStatus && engineStatus !== 'error') {
           updateEngineControls('idle');
@@ -65,6 +67,7 @@ const stockfish = typeof window.createStockfishController === 'function'
         if (engineStatus !== undefined) updateEngineControls(engineStatus);
         if (engineState !== undefined) engineStateEl.textContent = engineState;
         if (evalText !== undefined) evalLineEl.textContent = evalText;
+        if (evalScore !== undefined) updateEvalMeter(evalScore);
         if (pvText !== undefined) pvLineEl.textContent = pvText;
       }
     })
@@ -169,6 +172,17 @@ function updateEngineControls(engineStatus = null) {
   analysisPauseBtnEl.setAttribute('aria-pressed', isBusy ? 'true' : 'false');
 }
 
+function updateEvalMeter(score) {
+  if (!evalMeterFillEl) return;
+  if (!Number.isFinite(score)) {
+    evalMeterFillEl.style.height = '50%';
+    return;
+  }
+  const clamped = Math.max(-6, Math.min(6, score));
+  const percent = 50 + (clamped / 12) * 100;
+  evalMeterFillEl.style.height = `${Math.max(4, Math.min(96, percent))}%`;
+}
+
 function applyAnalysisMode() {
   analysisDepthBtnEl.classList.toggle('active', state.analysisModeSetting === 'depth20');
   analysisInfiniteBtnEl.classList.toggle('active', state.analysisModeSetting === 'infinite');
@@ -181,8 +195,9 @@ function applyAnalysisMode() {
 }
 
 function applyAnalysisLineCount() {
-  analysisLinesRangeEl.value = String(state.analysisLineCount);
   analysisLinesValueEl.textContent = String(state.analysisLineCount);
+  analysisLinesMinusBtnEl.disabled = state.analysisLineCount <= ANALYSIS_LINE_COUNTS[0];
+  analysisLinesPlusBtnEl.disabled = state.analysisLineCount >= ANALYSIS_LINE_COUNTS[ANALYSIS_LINE_COUNTS.length - 1];
   localStorage.setItem('cm_analysis_lines', String(state.analysisLineCount));
   if (stockfish && typeof stockfish.setMultiPv === 'function') {
     stockfish.setMultiPv(state.analysisLineCount);
@@ -208,6 +223,7 @@ function setEngineIdleState() {
   if (evalLineEl) {
     evalLineEl.textContent = 'Depth: -';
   }
+  updateEvalMeter(null);
   if (pvLineEl) {
     pvLineEl.textContent = 'Press ▶ to start analysis.';
   }
@@ -633,8 +649,11 @@ analysisInfiniteBtnEl.addEventListener('click', () => {
 analysisPlayBtnEl.addEventListener('click', () => {
   startEngineAnalysis();
 });
-analysisLinesRangeEl.addEventListener('input', () => {
-  setAnalysisLineCount(Number(analysisLinesRangeEl.value));
+analysisLinesMinusBtnEl.addEventListener('click', () => {
+  setAnalysisLineCount(state.analysisLineCount - 1);
+});
+analysisLinesPlusBtnEl.addEventListener('click', () => {
+  setAnalysisLineCount(state.analysisLineCount + 1);
 });
 analysisPauseBtnEl.addEventListener('click', () => {
   stopEngineAnalysis();

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grandmaster Valeriy Aveskulov - PGN Viewer</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
   <script src="vendor/chess/chess-0.10.3.min.js"></script>
   <link rel="stylesheet" href="Styles.css" />
 </head>
@@ -48,13 +49,13 @@
           <div class="board-footer-actions">
             <button id="prevGameBtn" type="button" title="Previous game" aria-label="Previous game">◀</button>
             <button id="flipBtn" type="button" title="Flip board" aria-label="Flip board">
-              <span class="button-icon" aria-hidden="true">&#x21BB;</span>
+              <span class="button-icon" aria-hidden="true">&#8644;</span>
               <span class="button-text">Flip board</span>
             </button>
-            <button id="copyFenBtn">Copy FEN</button>
+            <button id="copyFenBtn" type="button" title="Copy FEN" aria-label="Copy FEN">FEN</button>
             <div class="download-menu-wrap">
               <button id="downloadMenuToggle" class="download-menu-toggle" type="button" title="Download PGN" aria-label="Download PGN" aria-haspopup="true" aria-expanded="false">
-                <span class="button-icon" aria-hidden="true">&#x21E9;</span>
+                <span class="button-icon" aria-hidden="true">&#8599;</span>
                 <span class="button-text">Download</span>
               </button>
               <div id="downloadMenu" class="download-menu" role="menu">
@@ -86,18 +87,25 @@
                 <button id="analysisPlayBtn" class="analysis-icon-btn" type="button" title="Start analysis" aria-label="Start analysis">▶</button>
                 <button id="analysisPauseBtn" class="analysis-icon-btn" type="button" title="Pause analysis" aria-label="Stop analysis">⏸</button>
                 <button id="analysisDepthBtn" class="analysis-mode-btn" type="button" title="Maximum depth 20" aria-label="Maximum depth 20">20</button>
-                <button id="analysisInfiniteBtn" class="analysis-mode-btn" type="button" title="Infinite analysis" aria-label="Infinite analysis">∞</button>
+                <button id="analysisInfiniteBtn" class="analysis-mode-btn" type="button" title="Infinite analysis" aria-label="Infinite analysis">&infin;</button>
               </div>
               <div class="analysis-lines-control">
-                <label for="analysisLinesRange" class="analysis-lines-label">Analysis lines</label>
-                <div class="analysis-lines-row">
-                  <input id="analysisLinesRange" class="analysis-lines-range" type="range" min="1" max="5" step="1" value="1" aria-label="Analysis lines" />
-                  <span id="analysisLinesValue" class="analysis-lines-value">1</span>
+                <span class="analysis-lines-label">Analysis lines</span>
+                <div class="analysis-lines-stepper" role="group" aria-label="Analysis lines">
+                  <button id="analysisLinesMinusBtn" class="analysis-step-btn" type="button" title="Fewer lines" aria-label="Fewer analysis lines">-</button>
+                  <span id="analysisLinesValue" class="analysis-lines-value" aria-live="polite">1</span>
+                  <button id="analysisLinesPlusBtn" class="analysis-step-btn" type="button" title="More lines" aria-label="More analysis lines">+</button>
                 </div>
               </div>
             </div>
           </div>
-          <div id="evalLine" class="analysis-line">Depth: -</div>
+          <div class="eval-wrap">
+            <div class="eval-meter" aria-hidden="true">
+              <div id="evalMeterFill" class="eval-meter-fill"></div>
+              <div class="eval-meter-zero"></div>
+            </div>
+            <div id="evalLine" class="analysis-line">Depth: -</div>
+          </div>
           <div id="pvLine" class="pv-line">-</div>
         </div>
       </section>

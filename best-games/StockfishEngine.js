@@ -20,6 +20,12 @@
     return '-';
   }
 
+  function scoreNumeric(type, value) {
+    if (type === 'mate') return value > 0 ? 10 : -10;
+    if (type === 'cp') return value / 100;
+    return null;
+  }
+
   function whitePerspectiveFactor(fen) {
     const turn = String(fen || '').split(' ')[1];
     return turn === 'b' ? -1 : 1;
@@ -87,6 +93,7 @@
       activeAnalysisId: 0,
       currentDepth: null,
       pvLines: {},
+      topEval: null,
       searching: false,
       stopping: false,
       optionsDirty: false
@@ -126,6 +133,7 @@
       state.lastFen = null;
       state.currentDepth = null;
       state.pvLines = {};
+      state.topEval = null;
       state.searching = false;
       state.stopping = false;
     }
@@ -225,10 +233,19 @@
         const pvIndex = multiPvMatch ? Number(multiPvMatch[1]) : 1;
         const perspectiveValue = state.perspective;
         let score = '';
+        let evalScore = null;
 
-        if (mateMatch) score = scoreText('mate', Number(mateMatch[1]) * perspectiveValue);
-        else if (cpMatch) score = scoreText('cp', Number(cpMatch[1]) * perspectiveValue);
+        if (mateMatch) {
+          const mateValue = Number(mateMatch[1]) * perspectiveValue;
+          score = scoreText('mate', mateValue);
+          evalScore = scoreNumeric('mate', mateValue);
+        } else if (cpMatch) {
+          const cpValue = Number(cpMatch[1]) * perspectiveValue;
+          score = scoreText('cp', cpValue);
+          evalScore = scoreNumeric('cp', cpValue);
+        }
         if (depth) state.currentDepth = depth;
+        if (pvIndex === 1 && evalScore !== null) state.topEval = evalScore;
         if (pvMatch) {
           state.pvLines[pvIndex] = {
             text: formatPvMoves(state.fen, pvMatch[1]),
@@ -240,6 +257,7 @@
           engineStatus: 'searching',
           engineState: `${MODEL_LABEL}: analyzing`,
           evalText: `Depth: ${state.currentDepth || '-'}`,
+          evalScore: state.topEval,
           pvText: currentPvText()
         });
         return;
@@ -308,6 +326,7 @@
       state.perspective = whitePerspectiveFactor(fen);
       state.currentDepth = null;
       state.pvLines = {};
+      state.topEval = null;
       state.searching = true;
       state.stopping = false;
 
@@ -315,6 +334,7 @@
         engineStatus: 'searching',
         engineState: `${MODEL_LABEL}: analyzing`,
         evalText: 'Depth: -',
+        evalScore: null,
         pvText: '-'
       });
 

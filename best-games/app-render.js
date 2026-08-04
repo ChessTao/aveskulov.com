@@ -247,10 +247,9 @@
       const columns = [
         { label: 'No.' },
         { label: 'White', key: 'white' },
+        { label: 'Result' },
         { label: 'Black', key: 'black' },
-        { label: 'Date', key: 'date' },
-        { label: 'Event' },
-        { label: 'Result' }
+        { label: 'Date', key: 'date' }
       ];
 
       columns.forEach((column) => {
@@ -280,17 +279,15 @@
         const cells = [
           String(orderIndex + 1),
           game.white,
+          game.result,
           game.black,
-          game.year,
-          game.event,
-          game.result
+          game.year
         ];
 
         cells.forEach((value, cellIndex) => {
           const cell = document.createElement('td');
           cell.textContent = value;
-          if (cellIndex === 0 || cellIndex === 5) cell.classList.add('numeric');
-          if (cellIndex === 4) cell.classList.add('event-cell');
+          if (cellIndex === 0 || cellIndex === 2 || cellIndex === 4) cell.classList.add('numeric');
           if (cellIndex === 0) cell.classList.add('index-cell');
           row.appendChild(cell);
         });
