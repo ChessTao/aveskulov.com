@@ -277,7 +277,7 @@
         row.dataset.gameId = String(game.id);
 
         const cells = [
-          String(orderIndex + 1),
+          String(game.number || orderIndex + 1),
           game.white,
           game.result,
           game.black,

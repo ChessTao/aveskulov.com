@@ -1,0 +1,18 @@
+[Event "SixDays"]
+[Site "Chess.com"]
+[Date "2023.??.??"]
+[Round "7"]
+[White "Aveskulov, Valeriy"]
+[Black "Costa, Leonardo"]
+[Result "1-0"]
+[Annotator "Aveskulov,Valeriy"]
+[ECO "C95"]
+[WhiteElo "2470"]
+[BlackElo "2314"]
+[WhiteFideId "-1"]
+[BlackFideId "-1"]
+[PlyCount "69"]
+[GameId "474167477967"]
+[EventDate "2023.??.??"]
+
+{[%evp 0,69,20,23,23,23,23,20,32,9,1,9,20,-4,16,16,13,-10,-10,-9,11,8,4,-1,18,10,24,26,14,27,32,32,31,28,15,10,22,22,15,5,11,5,7,5,47,44,39,38,41,35,35,-73,-86,-51,0,0,0,-85,-56,-33,286,430,404,404,415,239,862,926,597,594,817,840]} 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 10. d4 Nbd7 11. Nbd2 Bb7 12. Bc2 Re8 13. Nf1 Bf8 14. Ng3 g6 15. a4 c5 16. d5 c4 17. Bg5 Be7 18. Be3 Qc7 19. Nh2 h5 20. Nf3 Nc5 21. Ng5 Nxa4 22. Bxa4 bxa4 23. Rxa4 a5 24. Qf3 Bc8 25. Nxh5 gxh5 26. Qg3 h4 27. Qxh4 Bf8 28. Bc1 Bg7 29. Re3 Nd7 30. Qh7+ Kf8 31. Rg3 Nf6 32. Qh4 Re7 33. Nh7+ Nxh7 34. Qxh7 f6 35. Bh6 1-0

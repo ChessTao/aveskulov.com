@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build-static.mjs"
+    "build": "node build-static.mjs",
+    "build:games": "node scripts/build-best-games-data.mjs",
+    "preview": "node scripts/static-server.mjs dist/client 5502"
   }
 }

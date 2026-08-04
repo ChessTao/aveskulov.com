@@ -1,6 +1,7 @@
 const PGN_SOURCE = 'storage/games/best-games.pgn';
+const GAME_INDEX_SOURCE = 'storage/games/index.json';
 
-const { loadPgnText, buildGames } = window.appPgn;
+const { hydrateGame, loadGameIndex, loadPgnText } = window.appPgn;
 const { createPositionCache } = window.appPosition;
 const { createRenderer } = window.appRender;
 
@@ -99,6 +100,7 @@ const state = {
 
 const BOARD_MIN_SIZE = 320;
 let keyboardScope = 'viewer';
+const gameLoadPromises = new Map();
 
 function setGamesMenuOpen(isOpen) {
   if (!appEl || !gamesMenuToggleEl) return;
@@ -114,6 +116,25 @@ function setDownloadMenuOpen(isOpen) {
 
 function currentGame() {
   return state.games[state.gameIndex] || null;
+}
+
+function gameNumberFromIndex(index) {
+  return Number(index) + 1;
+}
+
+function gameIndexFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const gameNumber = Number(params.get('game'));
+  if (!Number.isInteger(gameNumber) || gameNumber < 1) return null;
+  const index = gameNumber - 1;
+  return state.games[index] ? index : null;
+}
+
+function updateGameUrl({ replace = false } = {}) {
+  const url = new URL(window.location.href);
+  url.searchParams.set('game', String(gameNumberFromIndex(state.gameIndex)));
+  const method = replace ? 'replaceState' : 'pushState';
+  history[method](null, '', `${url.pathname}${url.search}${url.hash}`);
 }
 
 function sanitizeFilenamePart(value, fallback = 'game') {
@@ -148,14 +169,29 @@ function currentGameFilename() {
   return `${white}_vs_${black}_${date}.pgn`;
 }
 
-function downloadCurrentGame() {
+async function downloadCurrentGame() {
+  if (!currentGame()?.isLoaded) {
+    try {
+      await ensureGameLoaded(state.gameIndex);
+    } catch (error) {
+      console.error('Current game download load error', error);
+      return;
+    }
+  }
   const game = currentGame();
   if (!game || !game.pgn) return;
   triggerDownload(currentGameFilename(), `${String(game.pgn).trim()}\n`);
 }
 
-function downloadAllGames() {
-  if (!state.rawPgn) return;
+async function downloadAllGames() {
+  if (!state.rawPgn) {
+    try {
+      state.rawPgn = await loadPgnText(PGN_SOURCE);
+    } catch (error) {
+      console.error('PGN collection load error', error);
+      return;
+    }
+  }
   triggerDownload('best-games-collection.pgn', `${String(state.rawPgn).trim()}\n`);
 }
 
@@ -274,7 +310,7 @@ const positionCache = createPositionCache({
   getCurrentFen: () => {
     if (state.analysisMode && state.analysisCurrentNode) return state.analysisCurrentNode.fen;
     const game = currentGame();
-    if (!game) return START_FEN;
+    if (!game || !game.isLoaded || !game.states[state.replayIndex]) return START_FEN;
     return game.states[state.replayIndex].fen;
   }
 });
@@ -410,6 +446,43 @@ function findAnalysisNodeById(id) {
   return flattenAnalysisNodes(state.analysisRoot).find((node) => String(node.id) === String(id)) || null;
 }
 
+async function ensureGameLoaded(index) {
+  const game = state.games[index];
+  if (!game) return null;
+  if (game.isLoaded) return game;
+  if (gameLoadPromises.has(index)) return gameLoadPromises.get(index);
+
+  const loadPromise = (async () => {
+    const pgn = await loadPgnText(game.pgnPath);
+    const loadedGame = hydrateGame(game, pgn);
+    if (!loadedGame) throw new Error(`Could not parse game ${gameNumberFromIndex(index)}.`);
+    return loadedGame;
+  })();
+
+  gameLoadPromises.set(index, loadPromise);
+
+  try {
+    return await loadPromise;
+  } finally {
+    gameLoadPromises.delete(index);
+  }
+}
+
+function resetGamePosition() {
+  const game = currentGame();
+  state.replayIndex = 0;
+  state.selectedSquare = null;
+  state.legalTargets = [];
+  clearAnalysis();
+  state.lastMove = game && game.states[0] ? game.states[0].move || null : null;
+}
+
+function setLoadingGameHeader(game) {
+  boardTitleEl.textContent = `Loading game ${gameNumberFromIndex(state.gameIndex)}...`;
+  boardSubtitleEl.textContent = game ? game.subtitle : '';
+  movesWrapEl.replaceChildren();
+}
+
 function setGamesSort(key) {
   if (state.sortKey === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
   else {
@@ -427,7 +500,7 @@ function selectRelativeGame(delta) {
   if (currentIndex === -1) return;
   const nextIndex = Math.max(0, Math.min(currentIndex + delta, orderedGames.length - 1));
   if (nextIndex === currentIndex) return;
-  selectGame(orderedGames[nextIndex].id);
+  void selectGame(orderedGames[nextIndex].id);
 }
 
 function updateGameNavButtons() {
@@ -441,6 +514,7 @@ function updateGameNavButtons() {
 
 function goToReplay(index) {
   const game = currentGame();
+  if (!game || !game.isLoaded) return;
   const hadAnalysisView = state.analysisMode;
   setKeyboardScope('viewer');
   state.replayIndex = Math.max(0, Math.min(index, game.moves.length));
@@ -452,19 +526,36 @@ function goToReplay(index) {
   refresh({ renderMoves: hadAnalysisView });
 }
 
-function selectGame(index) {
+async function selectGame(index, { replaceUrl = false, updateUrl = true } = {}) {
+  const game = state.games[index];
+  if (!game) return;
+
   setKeyboardScope('games');
   state.gameIndex = index;
-  state.replayIndex = 0;
-  clearAnalysis();
-  state.selectedSquare = null;
-  state.legalTargets = [];
-  state.lastMove = null;
+  resetGamePosition();
   persistState();
-  refresh({ renderMoves: true });
   renderer.updateGamesSelectionState();
   updateGameNavButtons();
   setGamesMenuOpen(false);
+  if (updateUrl) updateGameUrl({ replace: replaceUrl });
+
+  if (!game.isLoaded) {
+    setLoadingGameHeader(game);
+  }
+
+  try {
+    await ensureGameLoaded(index);
+  } catch (error) {
+    console.error('Game load error', error);
+    boardTitleEl.textContent = 'Game not loaded';
+    boardSubtitleEl.textContent = 'Could not load this PGN file. Check generated storage/games/by-id files.';
+    return;
+  }
+
+  if (state.gameIndex !== index) return;
+  resetGamePosition();
+  persistState();
+  refresh({ renderMoves: true });
 }
 
 function legalMovesFrom(square, chess = positionCache.currentChess()) {
@@ -472,7 +563,7 @@ function legalMovesFrom(square, chess = positionCache.currentChess()) {
 }
 
 function onSquareClick(event) {
-  if (!currentGame()) return;
+  if (!currentGame()?.isLoaded) return;
 
   const squareEl = event.target.closest('.square[data-square]');
   if (!squareEl) return;
@@ -525,18 +616,18 @@ function persistState() {
 }
 
 function setOpeningPosition() {
+  const requestedIndex = gameIndexFromUrl();
   const firstListedGame = renderer.getSortedGames()[0];
-  state.gameIndex = firstListedGame ? firstListedGame.id : 0;
-  state.replayIndex = 0;
+  state.gameIndex = requestedIndex ?? (firstListedGame ? firstListedGame.id : 0);
   state.orientation = 'white';
-  state.selectedSquare = null;
-  state.legalTargets = [];
-  clearAnalysis();
-  state.lastMove = currentGame().states[0].move || null;
+  resetGamePosition();
   persistState();
+  updateGameUrl({ replace: true });
 }
 
 function refresh({ renderMoves: shouldRenderMoves = true } = {}) {
+  const game = currentGame();
+  if (!game || !game.isLoaded) return;
   renderer.updateHeader();
   renderer.renderBoard();
   if (shouldRenderMoves) renderer.renderMoves();
@@ -597,7 +688,7 @@ gamesListEl.addEventListener('click', (event) => {
 
   const gameRow = event.target.closest('tr[data-game-id]');
   if (gameRow) {
-    selectGame(Number(gameRow.dataset.gameId));
+    void selectGame(Number(gameRow.dataset.gameId));
   }
 });
 
@@ -646,11 +737,11 @@ if (downloadMenuToggleEl) {
   });
 }
 downloadGameBtnEl.addEventListener('click', () => {
-  downloadCurrentGame();
+  void downloadCurrentGame();
   setDownloadMenuOpen(false);
 });
 downloadAllGamesBtnEl.addEventListener('click', () => {
-  downloadAllGames();
+  void downloadAllGames();
   setDownloadMenuOpen(false);
 });
 analysisDepthBtnEl.addEventListener('click', () => {
@@ -723,6 +814,12 @@ window.addEventListener('resize', () => {
   applyBoardSize();
 });
 
+window.addEventListener('popstate', () => {
+  const index = gameIndexFromUrl();
+  if (index === null || index === state.gameIndex) return;
+  void selectGame(index, { updateUrl: false });
+});
+
 window.addEventListener('pageshow', () => {
   renderer.repairBoardImages();
 });
@@ -755,30 +852,39 @@ async function boot() {
     return;
   }
 
-  let rawPgn = '';
   try {
-    rawPgn = await loadPgnText(PGN_SOURCE);
+    state.games = await loadGameIndex(GAME_INDEX_SOURCE);
   } catch (error) {
-    console.error('PGN load error', error);
+    console.error('Game index load error', error);
     boardTitleEl.textContent = 'Games not loaded';
-    boardSubtitleEl.textContent = 'Could not load the PGN file. Check the path and run the project through a local server.';
+    boardSubtitleEl.textContent = 'Could not load the games index. Run npm run build to generate storage/games/index.json.';
     return;
   }
 
-  state.rawPgn = rawPgn;
-  state.games = buildGames(rawPgn);
   if (!state.games.length) {
     boardTitleEl.textContent = 'No games found';
-    boardSubtitleEl.textContent = 'The PGN file loaded, but it could not be parsed.';
+    boardSubtitleEl.textContent = 'The games index loaded, but it does not contain any games.';
+    return;
+  }
+
+  applyBoardSize();
+  setOpeningPosition();
+  renderer.renderGamesList();
+  setLoadingGameHeader(currentGame());
+
+  try {
+    await ensureGameLoaded(state.gameIndex);
+  } catch (error) {
+    console.error('Initial game load error', error);
+    boardTitleEl.textContent = 'Game not loaded';
+    boardSubtitleEl.textContent = 'Could not load the selected PGN file.';
     return;
   }
 
   if (downloadMenuToggleEl) downloadMenuToggleEl.disabled = false;
   downloadGameBtnEl.disabled = false;
   downloadAllGamesBtnEl.disabled = false;
-  applyBoardSize();
-  setOpeningPosition();
-  renderer.renderGamesList();
+  resetGamePosition();
   refresh();
 }
 

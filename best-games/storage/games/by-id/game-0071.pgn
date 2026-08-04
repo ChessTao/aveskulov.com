@@ -1,0 +1,18 @@
+[Event "Vezerkepzo Autumn GM 2023"]
+[Site "https://www.chess.com"]
+[Date "2023.??.??"]
+[Round "5.5"]
+[White "Palczert, Matyas"]
+[Black "Aveskulov, Valeriy"]
+[Result "0-1"]
+[Annotator "Aveskulov,Valeriy"]
+[ECO "B96"]
+[WhiteElo "2338"]
+[BlackElo "2492"]
+[WhiteFideId "-1"]
+[BlackFideId "-1"]
+[PlyCount "90"]
+[GameId "481360323991"]
+[EventDate "2023.??.??"]
+
+{[%evp 0,37,23,23,59,59,59,47,47,49,46,38,52,50,60,21,23,18,19,19,23,24,26,18,12,-9,-1,9,6,16,12,18,14,13,40,26,34,21,42,33]} 1. e4 c5 2. Nf3 d6 3. d4 Nf6 4. Nc3 cxd4 5. Nxd4 a6 6. Bg5 e6 7. f4 h6 8. Bh4 Nbd7 9. Qe2 e5 10. fxe5 Nxe5 11. O-O-O Be7 12. Nf3 Qa5 13. Kb1 Be6 14. Nxe5 dxe5 15. Bxf6 Bxf6 16. Nd5 Bxd5 17. Rxd5 Qb6 18. Qg4 Qc6 19. Bd3 Ke7 20. Qe2 Rac8 21. Qd2 Rhd8 22. Qb4+ Ke8 23. c4 Be7 24. Qe1 Qb6 25. Qc3 Kf8 26. Rc1 Bc5 27. Qb3 Qc7 28. a3 Rd6 29. Qc3 Re6 30. Be2 Rce8 31. Bg4 Rf6 32. Bf3 Kg8 33. Rcd1 Bd4 34. Qa5 Qxc4 35. Qb4 Qc7 36. R5xd4 exd4 37. Qxd4 Qxh2 38. Qd7 Qe5 39. Qxb7 Rb8 40. Rd5 Rxb7 41. Rxe5 Rb3 42. Ra5 Rfb6 43. Kc1 Rxb2 44. Rxa6 Rb1+ 45. Kc2 Rxa6 0-1

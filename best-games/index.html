@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grandmaster Valeriy Aveskulov - PGN Viewer</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
-  <script src="vendor/chess/chess-0.10.3.min.js"></script>
   <link rel="stylesheet" href="Styles.css" />
 </head>
 <body>
@@ -13,6 +12,11 @@
     <div class="topbar">
       <div>
         <h1>My Best Games</h1>
+        <p class="page-intro">
+          Here you can find my favorite games, analyze them with an engine, or download
+          them with my brief comments. I hope this collection will not only tell you more
+          about my chess style, but also bring you aesthetic pleasure.
+        </p>
       </div>
       <div class="topbar-actions">
         <button id="gamesMenuToggle" class="mobile-games-toggle" type="button" aria-label="Open games list" aria-controls="gamesPanel" aria-expanded="false">☰</button>
@@ -111,8 +115,8 @@
       </section>
     </div>
   </div>
+  <script src="vendor/chess/chess-0.10.3.min.js"></script>
   <script src="StockfishEngine.js"></script>
-  <script src="pgn-data.js"></script>
   <script src="app-pgn.js"></script>
   <script src="app-position.js"></script>
   <script src="app-render.js"></script>

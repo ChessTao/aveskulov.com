@@ -1,0 +1,15 @@
+[Event "Kharkov op"]
+[Site "?"]
+[Date "2004.??.??"]
+[Round "?"]
+[White "Poluektov, Yury"]
+[Black "Aveskulov, Valeriy"]
+[Result "0-1"]
+[ECO "A58"]
+[WhiteFideId "-1"]
+[BlackFideId "-1"]
+[PlyCount "60"]
+[GameId "368702468207"]
+[EventDate "2004.??.??"]
+
+{[%evp 0,60,28,28,27,4,30,41,68,70,63,61,88,69,61,56,65,21,20,14,14,14,41,37,57,53,62,28,32,-17,32,21,68,-65,-114,-75,-100,-102,-96,-150,-74,-131,-122,-148,-170,-343,-455,-737,-887,-954,-502,-551,-534,-569,-577,-577,-615,-606,-471,-759,-772,-973,-712]} 1. d4 Nf6 2. c4 c5 3. d5 b5 4. cxb5 a6 5. bxa6 Bxa6 6. Nc3 d6 7. g3 g6 8. Bg2 Bg7 9. Nh3 Nbd7 10. O-O h5 11. Bg5 Ne5 12. Qc2 Bc8 13. Rfe1 Bf5 14. Qb3 Qc8 15. f4 Rb8 16. Qd1 Nc4 17. Nf2 Nxb2 18. Qc1 Ng4 19. Nxg4 hxg4 20. Kh1 Bd4 21. a4 Rb3 22. Nd1 Rxg3 23. e4 Nd3 24. Qd2 Nxe1 25. Qxe1 Rxg2 26. Kxg2 Bxa1 27. Nf2 Bd4 28. exf5 Qb7 29. Qe4 gxf5 30. Qxf5 e6 0-1

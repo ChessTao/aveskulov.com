@@ -79,9 +79,21 @@
     return `${white}${whiteElo}-${black}${blackElo}, ${event}, ${year}, ${result}`;
   }
 
+  async function loadJson(source) {
+    const response = await fetch(source);
+    if (!response.ok) throw new Error(`JSON request failed: ${response.status}`);
+    return response.json();
+  }
+
+  async function loadGameIndex(source) {
+    const data = await loadJson(source);
+    const games = Array.isArray(data.games) ? data.games : [];
+    return games.map(createGameStub);
+  }
+
   async function loadPgnText(source) {
     try {
-      const response = await fetch(source, { cache: 'no-store' });
+      const response = await fetch(source);
       if (!response.ok) throw new Error(`PGN request failed: ${response.status}`);
       return response.text();
     } catch (error) {
@@ -93,55 +105,97 @@
     }
   }
 
+  function createGameStub(meta, index = 0) {
+    const headers = meta.headers || {};
+    return {
+      id: Number.isFinite(Number(meta.id)) ? Number(meta.id) : index,
+      number: Number.isFinite(Number(meta.number)) ? Number(meta.number) : index + 1,
+      pgnPath: meta.pgnPath || '',
+      pgn: '',
+      headers,
+      moves: [],
+      states: [],
+      isLoaded: false,
+      title: `${headers.White || meta.white || 'White'}${headers.WhiteElo ? ` (${headers.WhiteElo})` : ''} - ${headers.Black || meta.black || 'Black'}${headers.BlackElo ? ` (${headers.BlackElo})` : ''}`,
+      subtitle: gameSubtitle(headers),
+      compactLabel: compactGameLabel(headers),
+      result: meta.result || headers.Result || '*',
+      white: meta.white || headers.White || 'White',
+      black: meta.black || headers.Black || 'Black',
+      whiteElo: meta.whiteElo || headers.WhiteElo || '-',
+      blackElo: meta.blackElo || headers.BlackElo || '-',
+      event: meta.event || headers.Event || '-',
+      date: meta.date || headers.Date || '-',
+      year: meta.year || yearFromDate(headers.Date || ''),
+      sortDate: Number.isFinite(Number(meta.sortDate)) ? Number(meta.sortDate) : parseSortableDate(headers.Date || ''),
+      sortWhiteElo: Number.isFinite(Number(meta.sortWhiteElo)) ? Number(meta.sortWhiteElo) : parseSortableElo(headers.WhiteElo || ''),
+      sortBlackElo: Number.isFinite(Number(meta.sortBlackElo)) ? Number(meta.sortBlackElo) : parseSortableElo(headers.BlackElo || '')
+    };
+  }
+
+  function parseGamePgn(chunk, fallback = {}) {
+    const chess = new window.Chess();
+    const ok = chess.load_pgn(chunk, { sloppy: true, newline_char: '\n' });
+    if (!ok) return null;
+
+    const headers = parseHeaders(chunk);
+    const verboseMoves = chess.history({ verbose: true }) || [];
+    chess.reset();
+    const replay = chess;
+    const states = [{ fen: replay.fen(), san: null, move: null, moveNumber: 0, from: null, to: null }];
+
+    verboseMoves.forEach((move, moveIndex) => {
+      replay.move(move);
+      states.push({
+        fen: replay.fen(),
+        san: move.san,
+        move,
+        moveNumber: moveIndex + 1,
+        from: move.from,
+        to: move.to
+      });
+    });
+
+    return {
+      ...createGameStub({ ...fallback, headers }, fallback.id || 0),
+      ...fallback,
+      pgn: chunk,
+      headers,
+      moves: verboseMoves,
+      states,
+      isLoaded: true,
+      title: `${headers.White || 'White'}${headers.WhiteElo ? ` (${headers.WhiteElo})` : ''} - ${headers.Black || 'Black'}${headers.BlackElo ? ` (${headers.BlackElo})` : ''}`,
+      subtitle: gameSubtitle(headers),
+      compactLabel: compactGameLabel(headers),
+      result: headers.Result || '*',
+      white: headers.White || 'White',
+      black: headers.Black || 'Black',
+      whiteElo: headers.WhiteElo || '-',
+      blackElo: headers.BlackElo || '-',
+      event: headers.Event || '-',
+      date: headers.Date || '-',
+      year: yearFromDate(headers.Date || ''),
+      sortDate: parseSortableDate(headers.Date || ''),
+      sortWhiteElo: parseSortableElo(headers.WhiteElo || ''),
+      sortBlackElo: parseSortableElo(headers.BlackElo || '')
+    };
+  }
+
+  function hydrateGame(game, pgn) {
+    const parsedGame = parseGamePgn(pgn, game);
+    if (!parsedGame) return null;
+    Object.assign(game, parsedGame);
+    return game;
+  }
+
   function buildGames(text) {
     const chunks = splitMultiPgn(text);
     const games = [];
 
     chunks.forEach((chunk, index) => {
       try {
-        const chess = new window.Chess();
-        const ok = chess.load_pgn(chunk, { sloppy: true, newline_char: '\n' });
-        if (!ok) return;
-
-        const headers = parseHeaders(chunk);
-        const verboseMoves = chess.history({ verbose: true }) || [];
-        chess.reset();
-        const replay = chess;
-        const states = [{ fen: replay.fen(), san: null, move: null, moveNumber: 0, from: null, to: null }];
-
-        verboseMoves.forEach((move, moveIndex) => {
-          replay.move(move);
-          states.push({
-            fen: replay.fen(),
-            san: move.san,
-            move,
-            moveNumber: moveIndex + 1,
-            from: move.from,
-            to: move.to
-          });
-        });
-
-        games.push({
-          id: index,
-          pgn: chunk,
-          headers,
-          moves: verboseMoves,
-          states,
-          title: `${headers.White || 'White'}${headers.WhiteElo ? ` (${headers.WhiteElo})` : ''} - ${headers.Black || 'Black'}${headers.BlackElo ? ` (${headers.BlackElo})` : ''}`,
-          subtitle: gameSubtitle(headers),
-          compactLabel: compactGameLabel(headers),
-          result: headers.Result || '*',
-          white: headers.White || 'White',
-          black: headers.Black || 'Black',
-          whiteElo: headers.WhiteElo || '-',
-          blackElo: headers.BlackElo || '-',
-          event: headers.Event || '-',
-          date: headers.Date || '-',
-          year: yearFromDate(headers.Date || ''),
-          sortDate: parseSortableDate(headers.Date || ''),
-          sortWhiteElo: parseSortableElo(headers.WhiteElo || ''),
-          sortBlackElo: parseSortableElo(headers.BlackElo || '')
-        });
+        const game = parseGamePgn(chunk, { id: index, number: index + 1 });
+        if (game) games.push(game);
       } catch (error) {
         console.error('PGN parse error', error);
       }
@@ -152,6 +206,8 @@
 
   window.appPgn = {
     buildGames,
+    hydrateGame,
+    loadGameIndex,
     loadPgnText
   };
 })();

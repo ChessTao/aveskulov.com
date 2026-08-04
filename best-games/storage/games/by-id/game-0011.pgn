@@ -1,0 +1,17 @@
+[Event "Inautomarket-open"]
+[Site "?"]
+[Date "2006.??.??"]
+[Round "9"]
+[White "Aveskulov, Valeriy"]
+[Black "Dydyshko, Viacheslav"]
+[Result "1-0"]
+[ECO "B92"]
+[WhiteElo "2471"]
+[BlackElo "2575"]
+[WhiteFideId "-1"]
+[BlackFideId "-1"]
+[PlyCount "115"]
+[GameId "364567488821"]
+[EventDate "2006.??.??"]
+
+{[%evp 0,35,19,25,44,44,65,45,57,30,30,28,43,31,21,41,22,32,25,48,48,54,44,45,47,16,16,17,44,57,46,59,53,-4,22,-20,-11,-17]} 1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be2 e5 7. Nb3 Be7 8. O-O O-O 9. Qd3 Nbd7 10. Qg3 Kh8 11. a4 b6 12. Bc4 Bb7 13. Qd3 h6 14. f3 Qc7 15. Be3 Kg8 16. Qe2 Rfc8 17. Nd2 d5 18. Nxd5 Nxd5 19. exd5 Nf6 20. Bf2 Nxd5 21. Rfe1 Bf6 22. Bb3 Nf4 23. Qf1 Bd5 24. Bxd5 Nxd5 25. c3 Qc6 26. Ne4 Be7 27. Ng3 Bf6 28. Nh5 Re8 29. Rad1 Bd8 30. Qd3 Nf6 31. Nxf6+ Bxf6 32. Qe4 Re6 33. Rd5 Rc8 34. a5 bxa5 35. Rxa5 Rb8 36. Re2 Qxe4 37. fxe4 Bd8 38. Ra3 Bb6 39. Rd2 Kf8 40. b4 Rc8 41. Bxb6 Rxb6 42. Kf2 Rbc6 43. Rd3 Ke7 44. Ke3 h5 45. Kd2 h4 46. Ra5 f6 47. Kc2 Rh8 48. Rad5 Rc7 49. Kb3 Rh6 50. c4 Rg6 51. g3 Rg4 52. Re3 Ke6 53. Kc3 hxg3 54. hxg3 g6 55. c5 Rc6 56. Rd8 a5 57. Kc4 axb4 58. Kb5 1-0
