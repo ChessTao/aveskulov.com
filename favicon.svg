@@ -1,5 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#f4f0e7"/>
-  <path fill="#234b3d" d="M43 50H18v-6h25v6Zm-3-9H21c1-5 4-8 9-10-5-3-7-7-6-12 1-6 6-10 13-10 2 0 4 1 6 2l-4 6c-1-1-2-1-4-1-3 0-5 2-5 5 0 4 4 6 9 7l-2 6c-5 0-8 2-9 7h12Z"/>
-  <path fill="#a7653c" d="M16 54h30v5H16z"/>
+  <rect width="64" height="64" rx="10" fill="#234b3d"/>
+  <rect x="11" y="11" width="42" height="42" rx="3" fill="#f4f0e7"/>
+  <rect x="11" y="11" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="21.5" y="11" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="32" y="11" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="42.5" y="11" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="11" y="21.5" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="21.5" y="21.5" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="32" y="21.5" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="42.5" y="21.5" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="11" y="32" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="21.5" y="32" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="32" y="32" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="42.5" y="32" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="11" y="42.5" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="21.5" y="42.5" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="32" y="42.5" width="10.5" height="10.5" fill="#a65d38"/>
+  <rect x="42.5" y="42.5" width="10.5" height="10.5" fill="#efd1a6"/>
+  <rect x="11" y="11" width="42" height="42" rx="3" fill="none" stroke="#f4f0e7" stroke-width="2"/>
 </svg>
