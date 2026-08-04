@@ -50,6 +50,7 @@ const analysisLinesMinusBtnEl = document.getElementById('analysisLinesMinusBtn')
 const analysisLinesPlusBtnEl = document.getElementById('analysisLinesPlusBtn');
 const analysisLinesValueEl = document.getElementById('analysisLinesValue');
 const evalLineEl = document.getElementById('evalLine');
+const boardEvalMeterEl = document.querySelector('.board-eval-meter');
 const evalMeterFillEl = document.getElementById('evalMeterFill');
 const pvLineEl = document.getElementById('pvLine');
 const ANALYSIS_MODES = ['depth20', 'infinite'];
@@ -89,6 +90,7 @@ const state = {
   analysisRoot: null,
   analysisCurrentNode: null,
   analysisNodeSeq: 1,
+  evalScore: null,
   lastMove: null,
   engineEnabled: false,
   analysisModeSetting: ANALYSIS_MODES.includes(localStorage.getItem('cm_analysis_mode')) ? localStorage.getItem('cm_analysis_mode') : 'depth20',
@@ -174,13 +176,23 @@ function updateEngineControls(engineStatus = null) {
 
 function updateEvalMeter(score) {
   if (!evalMeterFillEl) return;
-  if (!Number.isFinite(score)) {
+  state.evalScore = Number.isFinite(score) ? score : null;
+  if (boardEvalMeterEl) {
+    const whiteAtBottom = state.orientation === 'white';
+    boardEvalMeterEl.classList.toggle('white-bottom', whiteAtBottom);
+    boardEvalMeterEl.classList.toggle('white-top', !whiteAtBottom);
+  }
+  if (!Number.isFinite(state.evalScore)) {
     evalMeterFillEl.style.height = '50%';
     return;
   }
-  const clamped = Math.max(-6, Math.min(6, score));
+  const clamped = Math.max(-6, Math.min(6, state.evalScore));
   const percent = 50 + (clamped / 12) * 100;
   evalMeterFillEl.style.height = `${Math.max(4, Math.min(96, percent))}%`;
+}
+
+function syncEvalMeterOrientation() {
+  updateEvalMeter(state.evalScore);
 }
 
 function applyAnalysisMode() {
@@ -537,6 +549,7 @@ function refresh({ renderMoves: shouldRenderMoves = true } = {}) {
 document.getElementById('flipBtn').addEventListener('click', () => {
   state.orientation = state.orientation === 'white' ? 'black' : 'white';
   persistState();
+  syncEvalMeterOrientation();
   renderer.renderBoard();
 });
 prevGameBtnEl.addEventListener('click', () => {
@@ -724,6 +737,7 @@ async function boot() {
   downloadAllGamesBtnEl.disabled = true;
   renderer.preloadPieces();
   applyBoardSize();
+  syncEvalMeterOrientation();
   renderer.renderBoard();
 
   if (stockfish && typeof stockfish.getModelLabel === 'function') {

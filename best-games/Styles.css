@@ -476,7 +476,7 @@
       height: 100%;
       min-height: 320px;
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, #f6f7fb 0 50%, #20231f 50% 100%);
+      background: #20231f;
       overflow: hidden;
       align-self: stretch;
     }
@@ -484,11 +484,17 @@
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 0;
       height: 50%;
-      background: #234b3d;
-      opacity: 0.86;
+      background: #f6f7fb;
       transition: height .18s ease;
+    }
+    .board-eval-meter.white-bottom .eval-meter-fill {
+      bottom: 0;
+      top: auto;
+    }
+    .board-eval-meter.white-top .eval-meter-fill {
+      top: 0;
+      bottom: auto;
     }
     .eval-meter-zero {
       position: absolute;
