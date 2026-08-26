@@ -5,6 +5,10 @@ const topbar = document.querySelector(".topbar");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const contactForm = document.querySelector(".contact-form");
 const campSignupForm = document.querySelector("[data-camp-signup-form]");
+const FORM_ENDPOINTS = {
+  contact: "https://script.google.com/macros/s/AKfycbxEcx2ccdHMJti3VYGeXi3BkgYYslnGQ1AiPFGq5yPiztTrpJOnYSBqm8D1Y02dFRIEmQ/exec",
+  campNotifications: "https://script.google.com/macros/s/AKfycbxEcx2ccdHMJti3VYGeXi3BkgYYslnGQ1AiPFGq5yPiztTrpJOnYSBqm8D1Y02dFRIEmQ/exec",
+};
 
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
@@ -92,6 +96,24 @@ requestAnimationFrame(() => {
   window.scrollTo(0, 0);
 });
 
+async function submitExternalForm(endpoint, payload) {
+  if (!endpoint) {
+    return false;
+  }
+
+  await fetch(endpoint, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      ...payload,
+      submittedAt: new Date().toISOString(),
+    }),
+  });
+
+  return true;
+}
+
 if (contactForm) {
   const status = contactForm.querySelector("[data-contact-status]");
 
@@ -126,14 +148,18 @@ if (contactForm) {
     }
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, level, message, website, source: "contact-page" }),
+      const wasSubmitted = await submitExternalForm(FORM_ENDPOINTS.contact, {
+        type: "contact-message",
+        name,
+        email,
+        level,
+        message,
+        website,
+        source: "contact-page",
       });
 
-      if (!response.ok) {
-        throw new Error("Contact service unavailable");
+      if (!wasSubmitted) {
+        throw new Error("Contact service is not configured");
       }
 
       contactForm.reset();
@@ -184,14 +210,16 @@ if (campSignupForm) {
     }
 
     try {
-      const response = await fetch("/api/camp-notifications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, consent, website, source: "camps-page" }),
+      const wasSubmitted = await submitExternalForm(FORM_ENDPOINTS.campNotifications, {
+        type: "camp-notification",
+        email,
+        consent,
+        website,
+        source: "camps-page",
       });
 
-      if (!response.ok) {
-        throw new Error("Signup service unavailable");
+      if (!wasSubmitted) {
+        throw new Error("Signup service is not configured");
       }
 
       campSignupForm.reset();

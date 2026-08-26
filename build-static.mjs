@@ -3,7 +3,7 @@ import { extname, join } from "node:path";
 
 const outDir = "dist";
 const htmlTemplate = "src/index.template.html";
-const rootFiles = ["styles.css", "script.js", "wrangler.jsonc"];
+const rootFiles = ["styles.css", "script.js", "wrangler.jsonc", "CNAME"];
 const rootAssetExtensions = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg"]);
 const directories = ["assets", "best-games", "pictures for students page", "styles", "server"];
 
