@@ -6,6 +6,7 @@ const htmlTemplate = "src/index.template.html";
 const rootFiles = ["styles.css", "script.js", "wrangler.jsonc", "CNAME"];
 const rootAssetExtensions = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg"]);
 const directories = ["assets", "best-games", "pictures for students page", "styles", "server"];
+const pageRoutes = ["home", "about", "method", "students", "publications", "camps", "prices", "contact", "legal"];
 
 function normalizePgnText(text) {
   return String(text || "").replace(/^(\uFEFF|ГЇВ»Вї|РїВ»С—)/, "").replace(/\r\n/g, "\n").trim();
@@ -130,6 +131,12 @@ if (existsSync(htmlTemplate)) {
   const html = buildHtml(readFileSync(htmlTemplate, "utf8"));
   writeFileSync("index.html", html);
   writeFileSync(join(outDir, "index.html"), html);
+
+  for (const route of pageRoutes) {
+    const routeDir = join(outDir, route);
+    mkdirSync(routeDir, { recursive: true });
+    writeFileSync(join(routeDir, "index.html"), html);
+  }
 }
 
 for (const file of rootFiles) {
@@ -159,6 +166,12 @@ mkdirSync(hostingClientDir, { recursive: true });
 
 if (existsSync("index.html")) {
   copyPath("index.html", join(hostingClientDir, "index.html"));
+}
+
+for (const route of pageRoutes) {
+  const routeDir = join(hostingClientDir, route);
+  mkdirSync(routeDir, { recursive: true });
+  copyPath("index.html", join(routeDir, "index.html"));
 }
 
 for (const file of rootFiles) {

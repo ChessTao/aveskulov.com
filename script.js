@@ -5,6 +5,17 @@ const topbar = document.querySelector(".topbar");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const contactForm = document.querySelector(".contact-form");
 const campSignupForm = document.querySelector("[data-camp-signup-form]");
+const ROUTE_TABS = new Set([
+  "home",
+  "about",
+  "method",
+  "students",
+  "publications",
+  "camps",
+  "prices",
+  "contact",
+  "legal",
+]);
 const FORM_ENDPOINTS = {
   contact: "https://script.google.com/macros/s/AKfycbxEcx2ccdHMJti3VYGeXi3BkgYYslnGQ1AiPFGq5yPiztTrpJOnYSBqm8D1Y02dFRIEmQ/exec",
   campNotifications: "https://script.google.com/macros/s/AKfycbxEcx2ccdHMJti3VYGeXi3BkgYYslnGQ1AiPFGq5yPiztTrpJOnYSBqm8D1Y02dFRIEmQ/exec",
@@ -24,7 +35,21 @@ function setMenuOpen(isOpen) {
   menuToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
 }
 
-function activateTab(tabName, shouldFocus = false) {
+function tabPath(tabName) {
+  return tabName === "home" ? "/" : `/${tabName}/`;
+}
+
+function tabFromLocation() {
+  const hashTab = window.location.hash.slice(1);
+  if (ROUTE_TABS.has(hashTab)) {
+    return hashTab;
+  }
+
+  const pathTab = window.location.pathname.split("/").filter(Boolean)[0] || "home";
+  return ROUTE_TABS.has(pathTab) ? pathTab : "home";
+}
+
+function activateTab(tabName, shouldFocus = false, shouldUpdateUrl = true) {
   const targetPanel = panels.find((panel) => panel.dataset.panel === tabName);
 
   if (!targetPanel) {
@@ -41,7 +66,9 @@ function activateTab(tabName, shouldFocus = false) {
     panel.classList.toggle("is-active", panel === targetPanel);
   });
 
-  history.replaceState(null, "", `#${tabName}`);
+  if (shouldUpdateUrl && ROUTE_TABS.has(tabName)) {
+    history.pushState(null, "", tabPath(tabName));
+  }
 
   if (shouldFocus) {
     targetPanel.focus({ preventScroll: true });
@@ -88,9 +115,11 @@ tabLinks.forEach((link) => {
   });
 });
 
-if (window.location.hash) {
-  activateTab(window.location.hash.slice(1));
-}
+activateTab(tabFromLocation(), false, false);
+
+window.addEventListener("popstate", () => {
+  activateTab(tabFromLocation(), false, false);
+});
 
 requestAnimationFrame(() => {
   window.scrollTo(0, 0);

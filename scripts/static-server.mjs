@@ -30,6 +30,17 @@ function sendFile(filePath, response) {
   });
 }
 
+function sendPath(filePath, response) {
+  stat(filePath, (error, stats) => {
+    if (!error && stats.isDirectory()) {
+      sendFile(join(filePath, "index.html"), response);
+      return;
+    }
+
+    sendFile(filePath, response);
+  });
+}
+
 createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, `http://${host}`).pathname).replace(/^\/+/, "");
   let filePath = join(root, pathname);
@@ -44,7 +55,7 @@ createServer((request, response) => {
     filePath = join(filePath, "index.html");
   }
 
-  sendFile(filePath, response);
+  sendPath(filePath, response);
 }).listen(port, host, () => {
   console.log(`Preview server: http://${host}:${port}/`);
 });
