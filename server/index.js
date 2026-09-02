@@ -28,7 +28,8 @@ export default {
         type: "camp-notification",
         email,
         source: payload.source || "camps-page",
-        consent: "endgame-camp-announcements",
+        consent: true,
+        consentLabel: "endgame-camp-announcements",
         submittedAt: new Date().toISOString(),
         secret: env.CAMP_SIGNUP_WEBHOOK_SECRET || "",
       };

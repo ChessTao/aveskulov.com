@@ -56,9 +56,10 @@ function doPost(e) {
 
 function handleCampNotification(payload) {
   const email = String(payload.email || "").trim();
-  const consent = String(payload.consent || "").trim();
+  const consent = payload.consent === true;
+  const consentLabel = String(payload.consentLabel || "endgame-camp-announcements").trim();
 
-  if (!isEmail(email) || consent !== "endgame-camp-announcements") {
+  if (!isEmail(email) || !consent) {
     return jsonResponse({ ok: false, message: "Email and consent are required." });
   }
 
@@ -67,7 +68,7 @@ function handleCampNotification(payload) {
     new Date(),
     email,
     String(payload.source || "camps-page"),
-    consent,
+    consentLabel,
   ]);
 
   MailApp.sendEmail({
