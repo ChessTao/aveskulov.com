@@ -1,18 +1,30 @@
-# Endpoint для форм на Google Apps Script
+# Google Apps Script endpoint for site forms
 
-Используйте этот вариант, если сайт размещен как статический сайт, например на GitHub Pages.
+Use this when the site sends form submissions through the server endpoint:
 
-1. Создайте Google Sheet.
-2. Добавьте две вкладки с названиями `CampNotifications` и `ContactMessages`.
-3. Откройте `Extensions -> Apps Script`.
-4. Вставьте туда этот скрипт.
-5. Разверните его как Web App с доступом `Anyone`.
-6. Скопируйте URL Web App и вставьте его в `FORM_ENDPOINTS` в файле `script.js`.
+- `/api/contact`
+- `/api/camp-notifications`
+
+The site server forwards both form types to Google Apps Script using
+`CAMP_SIGNUP_WEBHOOK_URL` and `CAMP_SIGNUP_WEBHOOK_SECRET`.
+
+## Setup
+
+1. Create a Google Sheet.
+2. Add two sheets named `CampNotifications` and `ContactMessages`.
+3. Open `Extensions -> Apps Script`.
+4. Paste the script below.
+5. Replace `your-email@example.com` with the email address that should receive notifications.
+6. Replace `replace-with-a-long-random-secret` with the same value used for `CAMP_SIGNUP_WEBHOOK_SECRET`.
+7. Deploy as `Web app`.
+8. Set access to `Anyone`.
+9. Copy the deployment URL into `CAMP_SIGNUP_WEBHOOK_URL`.
 
 ```js
 const CAMP_SHEET_NAME = "CampNotifications";
 const CONTACT_SHEET_NAME = "ContactMessages";
 const NOTIFICATION_EMAIL = "your-email@example.com";
+const WEBHOOK_SECRET = "replace-with-a-long-random-secret";
 
 function doPost(e) {
   let payload;
@@ -21,6 +33,10 @@ function doPost(e) {
     payload = JSON.parse((e && e.postData && e.postData.contents) || "{}");
   } catch (error) {
     return jsonResponse({ ok: false, message: "Invalid JSON." });
+  }
+
+  if (String(payload.secret || "") !== WEBHOOK_SECRET) {
+    return jsonResponse({ ok: false, message: "Unauthorized." });
   }
 
   if (String(payload.website || "").trim()) {
@@ -40,9 +56,9 @@ function doPost(e) {
 
 function handleCampNotification(payload) {
   const email = String(payload.email || "").trim();
-  const consent = payload.consent === true;
+  const consent = String(payload.consent || "").trim();
 
-  if (!isEmail(email) || !consent) {
+  if (!isEmail(email) || consent !== "endgame-camp-announcements") {
     return jsonResponse({ ok: false, message: "Email and consent are required." });
   }
 
@@ -51,7 +67,7 @@ function handleCampNotification(payload) {
     new Date(),
     email,
     String(payload.source || "camps-page"),
-    "endgame-camp-announcements",
+    consent,
   ]);
 
   MailApp.sendEmail({
@@ -120,14 +136,3 @@ function jsonResponse(data) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 ```
-
-В `script.js` можно использовать один и тот же URL развернутого Web App для обеих форм, если они обрабатываются этим одним скриптом:
-
-```js
-const FORM_ENDPOINTS = {
-  contact: "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec",
-  campNotifications: "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec",
-};
-```
-
-Так как endpoint вызывается напрямую со статического сайта, не добавляйте приватные секреты в `script.js`.

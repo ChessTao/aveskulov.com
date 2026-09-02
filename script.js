@@ -17,8 +17,8 @@ const ROUTE_TABS = new Set([
   "legal",
 ]);
 const FORM_ENDPOINTS = {
-  contact: "https://script.google.com/macros/s/AKfycbxEcx2ccdHMJti3VYGeXi3BkgYYslnGQ1AiPFGq5yPiztTrpJOnYSBqm8D1Y02dFRIEmQ/exec",
-  campNotifications: "https://script.google.com/macros/s/AKfycbxEcx2ccdHMJti3VYGeXi3BkgYYslnGQ1AiPFGq5yPiztTrpJOnYSBqm8D1Y02dFRIEmQ/exec",
+  contact: "/api/contact",
+  campNotifications: "/api/camp-notifications",
 };
 
 if ("scrollRestoration" in history) {
@@ -125,20 +125,23 @@ requestAnimationFrame(() => {
   window.scrollTo(0, 0);
 });
 
-async function submitExternalForm(endpoint, payload) {
+async function submitSiteForm(endpoint, payload) {
   if (!endpoint) {
     return false;
   }
 
-  await fetch(endpoint, {
+  const response = await fetch(endpoint, {
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...payload,
       submittedAt: new Date().toISOString(),
     }),
   });
+
+  if (!response.ok) {
+    throw new Error("Form service unavailable");
+  }
 
   return true;
 }
@@ -177,7 +180,7 @@ if (contactForm) {
     }
 
     try {
-      const wasSubmitted = await submitExternalForm(FORM_ENDPOINTS.contact, {
+      const wasSubmitted = await submitSiteForm(FORM_ENDPOINTS.contact, {
         type: "contact-message",
         name,
         email,
@@ -239,7 +242,7 @@ if (campSignupForm) {
     }
 
     try {
-      const wasSubmitted = await submitExternalForm(FORM_ENDPOINTS.campNotifications, {
+      const wasSubmitted = await submitSiteForm(FORM_ENDPOINTS.campNotifications, {
         type: "camp-notification",
         email,
         consent,
