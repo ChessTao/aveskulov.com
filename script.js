@@ -140,7 +140,16 @@ async function submitSiteForm(endpoint, payload) {
   });
 
   if (!response.ok) {
-    throw new Error("Form service unavailable");
+    let message = "Form service unavailable";
+
+    try {
+      const data = await response.json();
+      message = data.message || message;
+    } catch {
+      // Keep the generic message when the server does not return JSON.
+    }
+
+    throw new Error(message);
   }
 
   return true;
@@ -157,10 +166,6 @@ if (contactForm) {
     const level = String(formData.get("level") || "").trim();
     const message = String(formData.get("message") || "").trim();
     const website = String(formData.get("website") || "").trim();
-    const subject = encodeURIComponent("Chess coaching inquiry");
-    const body = encodeURIComponent(
-      `Name: ${name || "A prospective student"}\nEmail: ${email || "not specified"}\nLevel: ${level || "not specified"}\n\n${message || "I would like to discuss chess training."}`,
-    );
 
     if (!email || !message || website) {
       if (status) {
@@ -199,11 +204,12 @@ if (contactForm) {
       if (status) {
         status.textContent = "Thank you. Your message has been sent.";
       }
-    } catch {
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-
+    } catch (error) {
       if (status) {
-        status.textContent = "Your email app has been opened so the message can be sent directly.";
+        status.textContent =
+          error instanceof Error && error.message
+            ? error.message
+            : "Sorry, your message could not be sent. Please try again later.";
       }
     } finally {
       if (button) {
@@ -259,13 +265,12 @@ if (campSignupForm) {
       if (status) {
         status.textContent = "Thank you. I will notify you when the next endgame camp is scheduled.";
       }
-    } catch {
-      const subject = encodeURIComponent("Endgame camp notification request");
-      const body = encodeURIComponent(`Please add this email to the endgame camp notification list:\n\n${email}`);
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-
+    } catch (error) {
       if (status) {
-        status.textContent = "Your email app has been opened so the request can be sent directly.";
+        status.textContent =
+          error instanceof Error && error.message
+            ? error.message
+            : "Sorry, your request could not be sent. Please try again later.";
       }
     } finally {
       if (button) {
