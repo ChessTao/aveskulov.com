@@ -1,4 +1,6 @@
 dist/
+.sites-package-*/
+sites-*.tar.gz
 .env
 .env.local
 Старый сайт/

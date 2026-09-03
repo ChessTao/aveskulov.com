@@ -17,8 +17,8 @@ const ROUTE_TABS = new Set([
   "legal",
 ]);
 const FORM_ENDPOINTS = {
-  contact: "/api/contact",
-  campNotifications: "/api/camp-notifications",
+  contact: "https://aveskulov-chess-coaching.vdaveskulov.chatgpt.site/api/contact",
+  campNotifications: "https://aveskulov-chess-coaching.vdaveskulov.chatgpt.site/api/camp-notifications",
 };
 
 if ("scrollRestoration" in history) {

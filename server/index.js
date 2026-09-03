@@ -2,13 +2,17 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if (isApiPath(url.pathname) && request.method === "OPTIONS") {
+      return withCors(request, new Response(null, { status: 204 }));
+    }
+
     if (url.pathname === "/api/camp-notifications" && request.method === "POST") {
       let payload;
 
       try {
         payload = await request.json();
       } catch {
-        return Response.json({ message: "Invalid request." }, { status: 400 });
+        return apiResponse(request, { message: "Invalid request." }, { status: 400 });
       }
 
       const email = String(payload.email || "").trim();
@@ -17,11 +21,11 @@ export default {
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
       if (website) {
-        return Response.json({ message: "Accepted." }, { status: 202 });
+        return apiResponse(request, { message: "Accepted." }, { status: 202 });
       }
 
       if (!isEmail || !consent) {
-        return Response.json({ message: "Email and consent are required." }, { status: 400 });
+        return apiResponse(request, { message: "Email and consent are required." }, { status: 400 });
       }
 
       const signup = {
@@ -36,10 +40,10 @@ export default {
 
       const result = await sendWebhook(env, signup);
       if (result) {
-        return result;
+        return withCors(request, result);
       }
 
-      return Response.json({ message: "Accepted." }, { status: 202 });
+      return apiResponse(request, { message: "Accepted." }, { status: 202 });
     }
 
     if (url.pathname === "/api/contact" && request.method === "POST") {
@@ -48,7 +52,7 @@ export default {
       try {
         payload = await request.json();
       } catch {
-        return Response.json({ message: "Invalid request." }, { status: 400 });
+        return apiResponse(request, { message: "Invalid request." }, { status: 400 });
       }
 
       const name = String(payload.name || "").trim();
@@ -59,11 +63,11 @@ export default {
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
       if (website) {
-        return Response.json({ message: "Accepted." }, { status: 202 });
+        return apiResponse(request, { message: "Accepted." }, { status: 202 });
       }
 
       if (!isEmail || !message) {
-        return Response.json({ message: "Email and message are required." }, { status: 400 });
+        return apiResponse(request, { message: "Email and message are required." }, { status: 400 });
       }
 
       const contactMessage = {
@@ -79,15 +83,50 @@ export default {
 
       const result = await sendWebhook(env, contactMessage);
       if (result) {
-        return result;
+        return withCors(request, result);
       }
 
-      return Response.json({ message: "Accepted." }, { status: 202 });
+      return apiResponse(request, { message: "Accepted." }, { status: 202 });
     }
 
     return serveAsset(request, env);
   },
 };
+
+const ALLOWED_FORM_ORIGINS = new Set([
+  "https://aveskulov.com",
+  "https://www.aveskulov.com",
+  "https://aveskulov-chess-coaching.vdaveskulov.chatgpt.site",
+]);
+
+function isApiPath(pathname) {
+  return pathname === "/api/contact" || pathname === "/api/camp-notifications";
+}
+
+function apiResponse(request, body, init) {
+  return withCors(request, Response.json(body, init));
+}
+
+function withCors(request, response) {
+  const origin = request.headers.get("Origin");
+
+  if (!origin || !ALLOWED_FORM_ORIGINS.has(origin)) {
+    return response;
+  }
+
+  const headers = new Headers(response.headers);
+  headers.set("Access-Control-Allow-Origin", origin);
+  headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  headers.set("Access-Control-Allow-Headers", "Content-Type");
+  headers.set("Access-Control-Max-Age", "86400");
+  headers.append("Vary", "Origin");
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
 
 async function serveAsset(request, env) {
   const response = await env.ASSETS.fetch(request);
