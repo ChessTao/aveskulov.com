@@ -227,12 +227,15 @@ if (campSignupForm) {
 
     const formData = new FormData(campSignupForm);
     const email = String(formData.get("email") || "").trim();
+    const fideRating = String(formData.get("fideRating") || "").trim();
+    const endgameLevel = String(formData.get("endgameLevel") || "").trim();
+    const learningGoals = String(formData.get("learningGoals") || "").trim();
     const consent = formData.get("consent") === "on";
     const website = String(formData.get("website") || "").trim();
 
-    if (!email || !consent || website) {
+    if (!campSignupForm.reportValidity() || !email || !endgameLevel || !learningGoals || !consent || website) {
       if (status) {
-        status.textContent = "Please enter your email and confirm that you want camp announcements.";
+        status.textContent = "Please enter your email, select your endgame level, describe what you would like to learn, and confirm consent.";
       }
       return;
     }
@@ -251,6 +254,9 @@ if (campSignupForm) {
       const wasSubmitted = await submitSiteForm(FORM_ENDPOINTS.campNotifications, {
         type: "camp-notification",
         email,
+        fideRating,
+        endgameLevel,
+        learningGoals,
         consent,
         website,
         source: "camps-page",

@@ -9,11 +9,30 @@
           </div>
           <form class="camp-signup-form" data-camp-signup-form>
             <p>
-              Leave your email if you would like to be notified when the next endgame camp is scheduled.
+              Leave your email to be notified when the next endgame camp is scheduled, and tell me
+              about your endgame knowledge and what you would like to learn.
             </p>
             <label>
               Email address
               <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+            </label>
+            <label>
+              FIDE rating (if you have one)
+              <input type="number" name="fideRating" min="1" max="4000" step="1" placeholder="e.g. 1800">
+            </label>
+            <label>
+              Endgame knowledge level
+              <select name="endgameLevel" required>
+                <option value="" disabled selected>Select your level</option>
+                <option value="none">No prior knowledge</option>
+                <option value="basic">Basic</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="fairly-good">Fairly good</option>
+              </select>
+            </label>
+            <label>
+              What would you like to learn at the camp?
+              <textarea name="learningGoals" rows="4" maxlength="5000" placeholder="Topics, positions, or questions you would like to explore" required></textarea>
             </label>
             <label class="checkbox-label">
               <input type="checkbox" name="consent" required>

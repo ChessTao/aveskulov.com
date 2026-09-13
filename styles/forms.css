@@ -20,7 +20,10 @@
   font-weight: 700;
 }
 
-.camp-signup-form input[type="email"] {
+.camp-signup-form input[type="email"],
+.camp-signup-form input[type="number"],
+.camp-signup-form select,
+.camp-signup-form textarea {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 0;
@@ -29,7 +32,14 @@
   padding: 12px;
 }
 
-.camp-signup-form input[type="email"]:focus {
+.camp-signup-form textarea {
+  resize: vertical;
+}
+
+.camp-signup-form input[type="email"]:focus,
+.camp-signup-form input[type="number"]:focus,
+.camp-signup-form select:focus,
+.camp-signup-form textarea:focus {
   border-color: var(--green);
   outline: 2px solid rgba(35, 75, 61, 0.18);
 }

@@ -16,6 +16,9 @@ export default {
       }
 
       const email = String(payload.email || "").trim();
+      const fideRating = String(payload.fideRating ?? "").trim();
+      const endgameLevel = String(payload.endgameLevel || "").trim();
+      const learningGoals = String(payload.learningGoals || "").trim();
       const consent = payload.consent === true;
       const website = String(payload.website || "").trim();
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -28,9 +31,20 @@ export default {
         return apiResponse(request, { message: "Email and consent are required." }, { status: 400 });
       }
 
+      if (fideRating && (!/^\d+$/.test(fideRating) || Number(fideRating) < 1 || Number(fideRating) > 4000)) {
+        return apiResponse(request, { message: "Please enter a valid FIDE rating or leave it blank." }, { status: 400 });
+      }
+
+      if (!["none", "basic", "intermediate", "fairly-good"].includes(endgameLevel) || !learningGoals || learningGoals.length > 5000) {
+        return apiResponse(request, { message: "Select your endgame level and describe what you would like to learn (up to 5000 characters)." }, { status: 400 });
+      }
+
       const signup = {
         type: "camp-notification",
         email,
+        fideRating,
+        endgameLevel,
+        learningGoals,
         source: payload.source || "camps-page",
         consent: true,
         consentLabel: "endgame-camp-announcements",
