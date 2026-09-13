@@ -180,14 +180,30 @@ async function sendWebhook(env, payload) {
     return Response.json({ message: "Message service secret is not configured." }, { status: 503 });
   }
 
-  const webhookResponse = await fetch(env.CAMP_SIGNUP_WEBHOOK_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  try {
+    const webhookResponse = await fetch(env.CAMP_SIGNUP_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(20000),
+    });
 
-  if (!webhookResponse.ok) {
-    return Response.json({ message: "Message service unavailable." }, { status: 502 });
+    if (!webhookResponse.ok) {
+      console.error("Form webhook HTTP failure", { type: payload.type, status: webhookResponse.status });
+      return Response.json({ message: "Message service unavailable." }, { status: 502 });
+    }
+
+    // Apps Script can return HTTP 200 for rejected submissions and HTML errors.
+    const result = await webhookResponse.json();
+    if (result?.ok !== true) {
+      console.error("Form webhook rejected submission", { type: payload.type });
+      return Response.json({ message: "Message service did not confirm delivery. Please contact me by email." }, { status: 502 });
+    }
+  } catch (error) {
+    // Do not log the webhook URL, secret, response body, or personal form data.
+    const timedOut = error?.name === "TimeoutError" || error?.name === "AbortError";
+    console.error("Form webhook request failed", { type: payload.type, reason: timedOut ? "timeout" : "network-or-invalid-response" });
+    return Response.json({ message: "Message delivery could not be confirmed. Please contact me by email." }, { status: timedOut ? 504 : 502 });
   }
 
   return null;
