@@ -34,7 +34,7 @@ Links found:
 - FM Roberto de Abreu from South Africa received the FM title while sharing 1st-2nd place in the U16 section of the 2012 African Championship.
 
 Link found:
-- [African Championship 2012](http://chess-results.com/tnr78470.aspx?art=1&rd=6&lan=11)
+- [African Championship 2012](https://s1.chess-results.com/tnr81380.aspx?lan=1&art=1)
 
 ## Viktor Korennoi
 
@@ -44,7 +44,7 @@ Link found:
 
 Links found:
 - [Chigorin Memorial 2017](http://chess-results.com/tnr306753.aspx?lan=1)
-- [Moscow Open 2018](https://chess24.com/en/embed-tournament/moscow-open-2018)
+- [Moscow Open 2018](https://s3.chess-results.com/tnr328740.aspx?lan=1&art=9&snr=122)
 
 ## Bhaskar Gupta
 
